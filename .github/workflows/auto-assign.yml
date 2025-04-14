@@ -1,0 +1,16 @@
+name: Auto Assign Reviewers
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  autoassign:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Auto Assign Reviewers
+        uses: kentcdodds/auto-assign-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: '["your-github-username"]'  # замените на своих ревьюеров
