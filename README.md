@@ -1,9 +1,9 @@
 # Final project of Trusters team
-This repository contains a set of automated tests for "Contact List" web application, created using the 'pytest' framework.
+This repository contains a set of automated tests for "Thinking Tester Contact List" web application, created using the 'pytest' framework.
 
 ---
 ## About the application
-"Contact list" is a simple web application for managing contacts: adding, editing, deleting contacts.
+"Thinking Tester Contact List" is a simple web application for managing contacts: adding, editing, deleting contacts.
 Application link: [https://thinking-tester-contact-list.herokuapp.com/](https://thinking-tester-contact-list.herokuapp.com/)
 
 ---
@@ -98,7 +98,8 @@ The conftest.py file describes fixtures for configuring the browser, login, and 
 
 ---
 ## Contacts and support
-If you have any questions or suggestions, create an issue or write to email: **???**
+If you have any questions or suggestions, create an issue or write to email:
+trusters_test@gmail.com **???**
 
 ---
 ## License
