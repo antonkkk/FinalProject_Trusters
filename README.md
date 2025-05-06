@@ -11,7 +11,7 @@ Application link: [https://thinking-tester-contact-list.herokuapp.com/](https://
 - Python 3.x
 - pytest
 - Selenium WebDriver
-- pytest-html — генерация отчетов **???**
+- Allure Reports **???**
   
 ---
 ## Project structure
