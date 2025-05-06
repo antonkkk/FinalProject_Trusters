@@ -37,6 +37,11 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
+4. Install Allure package:
+```
+pip install allure-pytest
+```
+
 5. Make sure you have a browser driver (e.g. ChromeDriver) installed and it is available in your PATH.
 
 ---
@@ -71,6 +76,16 @@ pytest . -m regression
 pytest --html=report.html --self-contained-html tests/
 ```
 
+7. To run tests with Allure report generation:
+```
+pytest --alluredir=allure-results
+```
+
+8. To generate Allure html report:
+```
+allure serve allure-results
+```
+
 ---
 ## Fixtures
 The conftest.py file describes fixtures for configuring the browser, login, and other reusable actions.
@@ -99,7 +114,7 @@ The conftest.py file describes fixtures for configuring the browser, login, and 
 ---
 ## Contacts and support
 If you have any questions or suggestions, create an issue or write to email:
-trusters_test@gmail.com **???**
+trusters_test@gmail.com
 
 ---
 ## License
