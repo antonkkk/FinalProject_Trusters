@@ -29,7 +29,7 @@ cd FinalProject_Trusters
 ```
 python -m venv venv
 source venv/bin/activate  # Linux/MacOS
-venv\Scripts\activate     # Windows
+venv/Scripts/activate.bat     # Windows
 ```
 
 3. Install dependencies:
