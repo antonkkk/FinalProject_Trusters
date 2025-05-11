@@ -1,4 +1,3 @@
-import requests
 from helper.send_request import send_request
 
 
@@ -12,5 +11,5 @@ def test_api_01_get_contact_details(read_config, read_user_creds, read_add_temp)
     }
     contact_id = send_request("POST", URL, headers=headers, json=read_add_temp)["_id"]  # Add cont
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
-    response = send_request("GET", URL, headers=headers) # Check Get Contact details
+    response = send_request("GET", URL, headers=headers)  # Check Get Contact details
     assert response
