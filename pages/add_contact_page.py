@@ -30,4 +30,3 @@ class AddContactPage:
 
     def get_error_message(self):
         return self.driver.find_element(By.CLASS_NAME, "error-message").text
-

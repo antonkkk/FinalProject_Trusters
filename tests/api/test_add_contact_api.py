@@ -87,4 +87,3 @@ def test_add_contact_with_only_required_fields(read_config, read_user_creds):
     }
     response = send_request("POST", url, headers=headers, json=contact)
     assert response.status_code in (200, 201), f"Failed to add contact: {response.text}"
-
