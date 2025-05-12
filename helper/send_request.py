@@ -1,5 +1,6 @@
 import requests
 
+
 def send_request(
     method, url, headers=None, params=None, data=None, json=None, assert_status=True
 ):
