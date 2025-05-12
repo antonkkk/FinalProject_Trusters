@@ -32,7 +32,6 @@ def test_api_01_update_cd(read_config, read_user_creds, read_contact_temp):
     assert response["country"] == read_contact_temp[1]["country"]
 
 
-
 #  Test positive: partial update contact details fields
 def test_api_02_partial_update_cd(read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
@@ -192,7 +191,7 @@ def test_api_08_update_cd_with_over_len_req_fields(read_config, read_user_creds,
 
 
 #  Test negative: update contact details with Postal Code >10 symbols max length
-def test_api_09_update_cd_with_over_len_postal_code(read_config, read_user_creds, read_contact_temp):
+def test_api_09_update_cd_with_over_len_post_code(read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     token = send_request("POST", URL, json=read_user_creds)["token"]  # Authorization, get token
 
