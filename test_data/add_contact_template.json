@@ -1,0 +1,13 @@
+{
+    "firstName": "Emily",
+    "lastName": "Davis",
+    "birthdate": "1985-08-01",
+    "email": "edavis@gmail.com",
+    "phone": "8003333333",
+    "street1": "1 Main St.",
+    "street2": "Apartment A",
+    "city": "Oldtown",
+    "stateProvince": "KS",
+    "postalCode": "12345",
+    "country": "USA"
+}
