@@ -1,13 +1,32 @@
-{
-    "firstName": "Emily",
-    "lastName": "Davis",
-    "birthdate": "1985-08-01",
-    "email": "edavis@gmail.com",
-    "phone": "8003333333",
-    "street1": "1 Main St.",
-    "street2": "Apartment A",
-    "city": "Oldtown",
-    "stateProvince": "KS",
-    "postalCode": "12345",
-    "country": "USA"
-}
+[
+    {
+        "firstName": "Emily",
+        "lastName": "Davis",
+        "birthdate": "1985-08-01",
+        "email": "edavis@gmail.com",
+        "phone": "8003333333",
+        "street1": "1 Main St.",
+        "street2": "Apartment A",
+        "city": "Oldtown",
+        "stateProvince": "KS",
+        "postalCode": "12345",
+        "country": "USA"
+    },
+    {
+        "firstName": "Anna",
+        "lastName": "Wilson",
+        "birthdate": "1990-03-23",
+        "email": "awilson@gmail.com",
+        "phone": "8007777777",
+        "street1": "First Main St.",
+        "street2": "Second Main St.",
+        "city": "Rome",
+        "stateProvince": "AB",
+        "postalCode": "33333",
+        "country": "Italy"
+    },
+    {
+        "firstName": "Tim",
+        "lastName": "Brown"
+    }
+]

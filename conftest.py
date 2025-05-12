@@ -15,6 +15,6 @@ def read_user_creds():
 
 
 @pytest.fixture()
-def read_add_temp():
+def read_contact_temp():
     with open('test_data/add_contact_template.json', encoding='utf-8') as f:
         return json.load(f)

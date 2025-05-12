@@ -2,8 +2,8 @@ import requests
 from helper.send_request import send_request
 
 
-#  Test positive: get contact details by id
-def test_api_01_view_contact_details(read_config, read_user_creds, read_contact_temp):
+#  Test positive: delete contact by id
+def test_api_01_delete_contact(read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     token = send_request("POST", URL, json=read_user_creds)["token"]  # Authorization, get token
 
@@ -16,12 +16,15 @@ def test_api_01_view_contact_details(read_config, read_user_creds, read_contact_
         "POST", URL, headers=headers, json=read_contact_temp[0])["_id"]  # Add Contact
 
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
-    response = send_request("GET", URL, headers=headers)  # Check Get Contact details
-    assert response["_id"] == contact_id
+    response = requests.delete(URL, headers=headers)  # Delete Contact
+    assert response.status_code == 200, f"Status code is not '200', response: {response.text}"
+
+    response = requests.get(URL, headers=headers)  # Try Get deleted Contact
+    assert response.status_code == 404, f"Status code is not '404', response: {response.text}"
 
 
-#  Test negative: get unknown contact details by id
-def test_api_02_view_unknown_contact_details(read_config, read_user_creds, read_contact_temp):
+#  Test negative: delete unknown contact by id
+def test_api_02_delete_unknown_contact(read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     token = send_request("POST", URL, json=read_user_creds)["token"]  # Authorization, get token
 
@@ -35,6 +38,5 @@ def test_api_02_view_unknown_contact_details(read_config, read_user_creds, read_
 
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     requests.delete(URL, headers=headers)  # Delete Contact
-
-    response = requests.get(URL, headers=headers)  # Check Get unknown Contact details
+    response = requests.delete(URL, headers=headers)  # Delete unknown Contact
     assert response.status_code == 404, f"Status code is not '404', response: {response.text}"
