@@ -1,7 +1,7 @@
 import json
 import pytest
-
 from selenium import webdriver
+
 
 @pytest.fixture(scope="function")
 def browser():

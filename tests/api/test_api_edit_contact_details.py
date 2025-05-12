@@ -69,7 +69,8 @@ def test_api_02_partial_update_cd(read_config, read_user_creds, read_contact_tem
 
 
 #  Test negative: update contact details with empty required fields
-def test_api_03_update_cd_with_empty_req_fields(read_config, read_user_creds, read_contact_temp):
+def test_api_03_update_cd_with_empty_req_fields(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -88,11 +89,13 @@ def test_api_03_update_cd_with_empty_req_fields(read_config, read_user_creds, re
     read_contact_temp[0]["lastName"] = ""
     response = requests.put(
         URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with invalid Postal Code format
-def test_api_04_update_cd_with_ivalid_postal_code(read_config, read_user_creds, read_contact_temp):
+def test_api_04_update_cd_with_ivalid_postal_code(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -110,11 +113,13 @@ def test_api_04_update_cd_with_ivalid_postal_code(read_config, read_user_creds, 
     read_contact_temp[0]["postalCode"] = "postcode"
     response = requests.put(
         URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with invalid Date of Birth format
-def test_api_05_update_cd_with_ivalid_birth_date(read_config, read_user_creds, read_contact_temp):
+def test_api_05_update_cd_with_ivalid_birth_date(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -132,11 +137,13 @@ def test_api_05_update_cd_with_ivalid_birth_date(read_config, read_user_creds, r
     read_contact_temp[0]["birthdate"] = "20-12-2000"
     response = requests.put(
         URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with invalid Phone format
-def test_api_06_update_cd_with_ivalid_phone(read_config, read_user_creds, read_contact_temp):
+def test_api_06_update_cd_with_ivalid_phone(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -154,11 +161,13 @@ def test_api_06_update_cd_with_ivalid_phone(read_config, read_user_creds, read_c
     read_contact_temp[0]["phone"] = "8-029-3665544"
     response = requests.put(
         URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with invalid Email format
-def test_api_07_update_cd_with_ivalid_email(read_config, read_user_creds, read_contact_temp):
+def test_api_07_update_cd_with_ivalid_email(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -176,11 +185,13 @@ def test_api_07_update_cd_with_ivalid_email(read_config, read_user_creds, read_c
     read_contact_temp[0]["email"] = "email@"
     response = requests.put(
         URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with required fields >20 symbols max length
-def test_api_08_update_cd_with_over_len_req_fields(read_config, read_user_creds, read_contact_temp):
+def test_api_08_update_cd_with_over_len_req_fields(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -190,22 +201,28 @@ def test_api_08_update_cd_with_over_len_req_fields(read_config, read_user_creds,
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
-    response = send_request("POST", URL, headers=headers, json=read_contact_temp[0])
+    response = send_request(
+        "POST", URL, headers=headers, json=read_contact_temp[0])
     contact_id = response.json()["_id"]  # Используем .json() для получения ID контакта
 
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["firstName"] = "FirstNamemorethan20sy"
-    response = requests.put(URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    response = requests.put(
+        URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
     read_contact_temp[0]["firstName"] = "Emily"
     read_contact_temp[0]["lastName"] = "LastNamemorethan20sym"
-    response = requests.put(URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    response = requests.put(
+        URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with Postal Code >10 symbols max length
-def test_api_09_update_cd_with_over_len_post_code(read_config, read_user_creds, read_contact_temp):
+def test_api_09_update_cd_with_over_len_post_code(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -215,17 +232,21 @@ def test_api_09_update_cd_with_over_len_post_code(read_config, read_user_creds, 
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
-    response = send_request("POST", URL, headers=headers, json=read_contact_temp[0])
+    response = send_request(
+        "POST", URL, headers=headers, json=read_contact_temp[0])
     contact_id = response.json()["_id"]  # Используем .json() для получения ID контакта
 
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["postalCode"] = "12345678901"
-    response = requests.put(URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    response = requests.put(
+        URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with Phone >15 symbols max length
-def test_api_10_update_cd_with_over_len_phone(read_config, read_user_creds, read_contact_temp):
+def test_api_10_update_cd_with_over_len_phone(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -235,17 +256,21 @@ def test_api_10_update_cd_with_over_len_phone(read_config, read_user_creds, read
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
-    response = send_request("POST", URL, headers=headers, json=read_contact_temp[0])
+    response = send_request(
+        "POST", URL, headers=headers, json=read_contact_temp[0])
     contact_id = response.json()["_id"]  # Используем .json() для получения ID контакта
 
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["phone"] = "1234567890123456"
-    response = requests.put(URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    response = requests.put(
+        URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
 
 #  Test negative: update contact details with optional fields >40 symbols max length
-def test_api_11_update_cd_with_over_len_opt_fields(read_config, read_user_creds, read_contact_temp):
+def test_api_11_update_cd_with_over_len_opt_fields(
+        read_config, read_user_creds, read_contact_temp):
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
     token = response.json()["token"]  # Используем .json() для извлечения токена
@@ -255,15 +280,20 @@ def test_api_11_update_cd_with_over_len_opt_fields(read_config, read_user_creds,
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
-    response = send_request("POST", URL, headers=headers, json=read_contact_temp[0])
+    response = send_request(
+        "POST", URL, headers=headers, json=read_contact_temp[0])
     contact_id = response.json()["_id"]  # Используем .json() для получения ID контакта
 
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["city"] = "MyLongCityMyLongCity MyLongCityMyLongCity"
-    response = requests.put(URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    response = requests.put(
+        URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")
 
     read_contact_temp[0]["city"] = "Oldtown"
     read_contact_temp[0]["street1"] = "MyLongStreetAddress MyLongStreetAddress M"
-    response = requests.put(URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
-    assert response.status_code == 400, f"Status code is not '400', response: {response.text}"
+    response = requests.put(
+        URL, headers=headers, json=read_contact_temp[0])  # Update Contact details
+    assert response.status_code == 400, (
+        f"Status code is not '400', response: {response.text}")

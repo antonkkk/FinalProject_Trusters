@@ -192,4 +192,3 @@ def test_cancel_contact_creation_using_cancel_button(browser):
     )
 
     assert browser.current_url == "https://thinking-tester-contact-list.herokuapp.com/contactList"
-

@@ -26,7 +26,6 @@ def test_add_contact_with_all_valid_fields(read_config, read_user_creds):
     assert response.status_code in (200, 201), f"Failed to add contact: {response.text}"
 
 
-
 @pytest.mark.regression
 def test_submit_with_invalid_email_format(read_config, read_user_creds):
     login_url = f'{read_config["URL"]}/users/login'
