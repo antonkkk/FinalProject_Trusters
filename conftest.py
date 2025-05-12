@@ -1,5 +1,13 @@
 import json
 import pytest
+from selenium import webdriver
+
+
+@pytest.fixture(scope="function")
+def browser():
+    driver = webdriver.Chrome()  # Или другой браузер
+    yield driver
+    driver.quit()
 
 
 @pytest.fixture()
