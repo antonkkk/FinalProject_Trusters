@@ -100,8 +100,8 @@ def test_api_03_update_cd_with_empty_req_fields(
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["firstName"] = ""
     read_contact_temp[0]["lastName"] = ""
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -130,8 +130,8 @@ def test_api_04_update_cd_with_invalid_postal_code(
     # Update Contact details
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["postalCode"] = "postcode"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -160,8 +160,8 @@ def test_api_05_update_cd_with_invalid_birth_date(
     # Update Contact details
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["birthdate"] = "20-12-2000"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -190,8 +190,8 @@ def test_api_06_update_cd_with_invalid_phone(
     # Update Contact details
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["phone"] = "8-029-3665544"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -220,8 +220,8 @@ def test_api_07_update_cd_with_invalid_email(
     # Update Contact details
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["email"] = "email@"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -250,16 +250,16 @@ def test_api_08_update_cd_with_over_len_req_fields(
     # Update Contact Firstname
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["firstName"] = "FirstNamemorethan20sy"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
     # Update Contact Lastname
     read_contact_temp[0]["firstName"] = "Emily"
     read_contact_temp[0]["lastName"] = "LastNamemorethan20sym"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -287,8 +287,8 @@ def test_api_09_update_cd_with_over_len_post_code(
     # Update Contact details
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["postalCode"] = "12345678901"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -316,8 +316,8 @@ def test_api_10_update_cd_with_over_len_phone(
     # Update Contact details
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["phone"] = "1234567890123456"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
@@ -345,15 +345,15 @@ def test_api_11_update_cd_with_over_len_opt_fields(
     # Update Contact details optional field City
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
     read_contact_temp[0]["city"] = "MyLongCityMyLongCity MyLongCityMyLongCity"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
 
     # Update Contact details optional field Street Address 1
     read_contact_temp[0]["city"] = "Oldtown"
     read_contact_temp[0]["street1"] = "MyLongStreetAddress MyLongStreetAddress M"
-    response = send_request("PUT",
-        URL, headers=headers, json=read_contact_temp[0], assert_status=False)
+    response = send_request(
+        "PUT", URL, headers=headers, json=read_contact_temp[0], assert_status=False)
     assert response.status_code == 400, (
         f"Status code is not '400', response: {response.text}")
