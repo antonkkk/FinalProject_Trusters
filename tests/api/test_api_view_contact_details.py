@@ -1,56 +1,61 @@
-import requests
+import pytest
 from helper.send_request import send_request
 
 
 # Test positive: get contact details by id
+@pytest.mark.contact_details
+@pytest.mark.smoke
+@pytest.mark.acceptance
 def test_api_01_view_contact_details(
         read_config, read_user_creds, read_contact_temp):
-    # Авторизация
+    # Authorization
     URL = f'{read_config["URL"]}/users/login'
     response = send_request(
-        "POST", URL, json=read_user_creds)  # Исправлено: вызов send_request
-    token = response.json()["token"]  # Исправлено: теперь используем .json()
+        "POST", URL, json=read_user_creds)
+    token = response.json()["token"]
 
-    # Добавление контакта
+    # Add contact
     URL = f'{read_config["URL"]}/contacts'
     headers = {
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
     response = send_request(
-        "POST", URL, headers=headers, json=read_contact_temp[0])  # send_request
-    contact_id = response.json()["_id"]  # Исправлено: теперь используем .json()
+        "POST", URL, headers=headers, json=read_contact_temp[0])
+    contact_id = response.json()["_id"]
 
-    # Получение контакта по id
+    # Get Contact by id
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
-    response = send_request("GET", URL, headers=headers)  # send_request
-    assert response.json()["_id"] == contact_id  # Исправлено: используем .json()
+    response = send_request("GET", URL, headers=headers)
+    assert response.json()["_id"] == contact_id
 
 
 # Test negative: get unknown contact details by id
+@pytest.mark.contact_details
+@pytest.mark.regression
+@pytest.mark.acceptance
 def test_api_02_view_unknown_contact_details(
         read_config, read_user_creds, read_contact_temp):
-    # Авторизация
+    # Authorization
     URL = f'{read_config["URL"]}/users/login'
     response = send_request(
-        "POST", URL, json=read_user_creds)  # Исправлено: вызов send_request
-    token = response.json()["token"]  # Исправлено: теперь используем .json()
+        "POST", URL, json=read_user_creds)
+    token = response.json()["token"]
 
-    # Добавление контакта
+    # Add contact
     URL = f'{read_config["URL"]}/contacts'
     headers = {
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
     response = send_request(
-        "POST", URL, headers=headers, json=read_contact_temp[0])  # send_request
-    contact_id = response.json()["_id"]  # Исправлено: теперь используем .json()
-
-    # Удаление контакта
+        "POST", URL, headers=headers, json=read_contact_temp[0])
+    contact_id = response.json()["_id"]
+    # Delete Contact
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
-    requests.delete(URL, headers=headers)  # Стандартный requests для DELETE
+    send_request("DELETE", URL, headers=headers)
 
-    # Попытка получить удалённый контакт
-    response = requests.get(URL, headers=headers)  # Стандартный requests для GET
+    # Try to get deleted Contact
+    response = send_request("GET", URL, headers=headers, assert_status=False)
     assert response.status_code == 404, (
-        f"Status code is not '404', response: {response.text}")
+       f"Status code is not '404', response: {response.text}")
