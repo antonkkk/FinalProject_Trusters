@@ -1,44 +1,58 @@
-import requests
+import pytest
 from helper.send_request import send_request
 
 
-#  Test positive: delete contact by id
+# Test positive: delete contact by id
+@pytest.mark.delete_contact
+@pytest.mark.smoke
+@pytest.mark.acceptance
 def test_api_01_delete_contact(read_config, read_user_creds, read_contact_temp):
+    # Authorization
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
-    token = response.json()["token"]  # Используем .json() для извлечения токена
+    token = response.json()["token"]
 
+    # Add contact
     URL = f'{read_config["URL"]}/contacts'
     headers = {
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
     response = send_request("POST", URL, headers=headers, json=read_contact_temp[0])
-    contact_id = response.json()["_id"]  # Используем .json() для получения ID контакта
+    contact_id = response.json()["_id"]
 
+    # Delete contact
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
-    response = requests.delete(URL, headers=headers)  # Delete Contact
-    assert response.status_code == 200, f"Status code is not '200', response: {response.text}"
+    send_request("DELETE", URL, headers=headers)
 
-    response = requests.get(URL, headers=headers)  # Try Get deleted Contact
+    # Try Get deleted Contact
+    response = send_request("GET", URL, headers=headers, assert_status=False)
     assert response.status_code == 404, f"Status code is not '404', response: {response.text}"
 
 
-#  Test negative: delete unknown contact by id
+# Test negative: delete unknown contact by id
+@pytest.mark.delete_contact
+@pytest.mark.regression
+@pytest.mark.acceptance
 def test_api_02_delete_unknown_contact(read_config, read_user_creds, read_contact_temp):
+    # Authorization
     URL = f'{read_config["URL"]}/users/login'
     response = send_request("POST", URL, json=read_user_creds)
-    token = response.json()["token"]  # Используем .json() для извлечения токена
+    token = response.json()["token"]
 
+    # Add contact
     URL = f'{read_config["URL"]}/contacts'
     headers = {
         "Content-Type": "application/json",
         "Authorization": f'Bearer {token}'
     }
     response = send_request("POST", URL, headers=headers, json=read_contact_temp[0])
-    contact_id = response.json()["_id"]  # Используем .json() для получения ID контакта
+    contact_id = response.json()["_id"]
 
+    # Delete contact
     URL = f'{read_config["URL"]}/contacts/{contact_id}'
-    response = requests.delete(URL, headers=headers)  # Delete Contact
-    response = requests.delete(URL, headers=headers)  # Delete unknown Contact
+    send_request("DELETE", URL, headers=headers)
+
+    # Delete unknown contact
+    response = send_request("DELETE", URL, headers=headers, assert_status=False)
     assert response.status_code == 404, f"Status code is not '404', response: {response.text}"
