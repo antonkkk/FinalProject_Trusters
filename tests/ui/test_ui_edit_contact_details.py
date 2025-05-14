@@ -193,4 +193,3 @@ def test_ui_04_submit_edit_contact_with_empty_req_fields(browser):
     assert "Validation failed" in error_text
     assert "firstName: Path `firstName` is required." in error_text
     assert "lastName: Path `lastName` is required." in error_text
-

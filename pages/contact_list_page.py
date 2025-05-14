@@ -7,12 +7,12 @@ from test_data.env import Env
 
 class ContactListPage:
     all_contact_items = (By.CLASS_NAME, "contactTableBodyRow")
+
     def __init__(self, driver):
         self.driver = driver
 
     def open(self):
         self.driver.get(Env.URL_contact_list)
-
 
     def select_any_contact(self, timeout=10):
         WebDriverWait(self.driver, timeout).until(
