@@ -1,26 +1,21 @@
 import pytest
-import random
-import string
+import time
 from helper.send_request import send_request
+import copy
 
 
 def generate_random_email():
-    random_part = ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
+    random_part = str(time.time())
     return f"autotest_{random_part}@example.com"
 
 
 @pytest.mark.sign_up
-def test_successful_signup(read_config):
+def test_successful_signup(read_config, read_signup_temp):
     url = f'{read_config["URL"]}/users'
     email = generate_random_email()
-    password = "Test1234"
 
-    payload = {
-        "firstName": "Auto",
-        "lastName": "Test",
-        "email": email,
-        "password": password
-    }
+    payload = read_signup_temp.copy()
+    payload["email"] = email
 
     response = send_request("POST", url, json=payload)
 
@@ -30,15 +25,12 @@ def test_successful_signup(read_config):
 
 
 @pytest.mark.sign_up
-def test_negative_signup_with_existing_email(read_config, read_user_creds):
+def test_negative_signup_with_existing_email(read_config, read_user_creds, read_signup_temp):
     url = f'{read_config["URL"]}/users'
 
-    payload = {
-        "firstName": "Test",
-        "lastName": "User",
-        "email": read_user_creds["email"],
-        "password": read_user_creds["password"]
-    }
+    payload = read_signup_temp.copy()
+    payload["email"] = read_user_creds["email"]
+    payload["password"] = read_user_creds["password"]
 
     response = send_request("POST", url, json=payload, assert_status=False)
 
