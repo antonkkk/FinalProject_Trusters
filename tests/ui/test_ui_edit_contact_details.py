@@ -172,7 +172,7 @@ def test_ui_04_submit_edit_contact_with_empty_req_fields(browser):
 @pytest.mark.contact_details
 @pytest.mark.regression
 @pytest.mark.acceptance
-# Test negative: Submit Edit Contact form with invalid format Phone, Date of Birth, Email, Postal Code
+# Test negative: Submit Edit Contact form with invalid format Phone, Birth Date, Email, Postal Code
 def test_ui_05_submit_edit_contact_with_invalid_format_values(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -307,9 +307,9 @@ def test_ui_07_submit_edit_optional_fields_with_over_len_values(browser):
         EC.visibility_of_element_located((By.ID, "error"))
     ).text
     assert "Validation failed" in error_text
-    assert (f"postalCode: Path `postalCode` (`{ContactTemp.contact_edit["postalCode"]}`) is longer"
-            f" than the maximum allowed length (10)") in error_text, "Postal Code validation failed"
-    assert (f"city: Path `city` (`{ContactTemp.contact_edit["city"]}`) is longer"
-            f" than the maximum allowed length (40)") in error_text, "City validation failed"
-    assert (f"phone: Path `phone` (`{ContactTemp.contact_edit["phone"]}`) is longer"
-            f" than the maximum allowed length (15)") in error_text, "Phone validation failed"
+    assert (f'postalCode: Path `postalCode` (`{ContactTemp.contact_edit["postalCode"]}`) is longer'
+            f' than the maximum allowed length (10)') in error_text, "Postal Code validation failed"
+    assert (f'city: Path `city` (`{ContactTemp.contact_edit["city"]}`) is longer'
+            f' than the maximum allowed length (40)') in error_text, "City validation failed"
+    assert (f'phone: Path `phone` (`{ContactTemp.contact_edit["phone"]}`) is longer'
+            f' than the maximum allowed length (15)') in error_text, "Phone validation failed"

@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from test_data.env import Env
 
+
 class ContactListPage:
     all_contact_items = (By.CLASS_NAME, "contactTableBodyRow")
 

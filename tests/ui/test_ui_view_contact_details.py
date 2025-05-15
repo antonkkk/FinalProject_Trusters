@@ -36,8 +36,10 @@ def test_ui_01_view_contact_details(browser):
     assert header.text == "Contact Details"
 
     # Check firstname and lastname are the same as on Contact List page
-    firstname_field = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID, 'firstName')))
-    lastname_field = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID, 'lastName')))
+    firstname_field = WebDriverWait(
+        browser, 10).until(EC.visibility_of_element_located((By.ID, 'firstName')))
+    lastname_field = WebDriverWait(
+        browser, 10).until(EC.visibility_of_element_located((By.ID, 'lastName')))
 
     assert firstname_field.text == contact_firstname
     assert lastname_field.text == contact_lastname
@@ -63,7 +65,8 @@ def test_ui_02_return_to_contact_list_from_contact_details(browser):
     contact_details_page.open()
 
     # Click to the Return to Contact List button
-    return_button = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID, 'return')))
+    return_button = WebDriverWait(
+        browser, 10).until(EC.visibility_of_element_located((By.ID, 'return')))
     return_button.click()
     header = browser.find_element(By.XPATH, "//h1")
     assert header.text == "Contact List"
