@@ -36,9 +36,12 @@ def read_signup_temp():
 
 
 @pytest.fixture(scope="function")
-def auth_token(read_config, read_user_creds):
-    config = read_config
-    creds = read_user_creds
+def auth_token():
+    with open('test_data/config.json', encoding='utf-8') as cfg_file:
+        config = json.load(cfg_file)
+    with open('test_data/user_creds.json', encoding='utf-8') as creds_file:
+        creds = json.load(creds_file)
+
     login_url = f'{config["URL"]}/users/login'
     payload = {
         "email": creds["email"],
