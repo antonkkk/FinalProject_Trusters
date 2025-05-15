@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from test_data.env import Env
 
 
 class AddContactPage:
@@ -17,6 +18,9 @@ class AddContactPage:
         self.driver.find_element(By.ID, "stateProvince").send_keys(contact.get("stateProvince", ""))
         self.driver.find_element(By.ID, "postalCode").send_keys(contact.get("postalCode", ""))
         self.driver.find_element(By.ID, "country").send_keys(contact.get("country", ""))
+
+    def open(self):
+        self.driver.get(Env.URL_add_contact)
 
     def submit(self):
         self.driver.find_element(By.ID, "submit").click()

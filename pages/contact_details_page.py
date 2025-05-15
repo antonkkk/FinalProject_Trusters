@@ -5,6 +5,7 @@ from test_data.env import Env
 
 
 class ContactDetailsPage:
+    delete_button = (By.ID, 'delete')
     locators = {
         "firstName": (By.ID, "firstName"),
         "lastName": (By.ID, "lastName"),
@@ -28,8 +29,10 @@ class ContactDetailsPage:
     def click_edit_button(self):
         self.driver.find_element(By.ID, "edit-contact").click()
 
-    def click_delete_contact_button(self):
-        self.driver.find_element(By.ID, "delete").click()
+    def check_element(self, locator):
+        element = WebDriverWait(
+            self.driver, 10).until(EC.visibility_of_element_located(locator))
+        return element
 
     def click_return_to_contact_list_button(self):
         self.driver.find_element(By.ID, "return").click()

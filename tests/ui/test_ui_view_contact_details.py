@@ -36,11 +36,8 @@ def test_ui_01_view_contact_details(browser):
     assert header.text == "Contact Details"
 
     # Check firstname and lastname are the same as on Contact List page
-    wait = WebDriverWait(browser, 10)
-    wait.until(EC.visibility_of_element_located((By.ID, 'firstName')))
-    wait.until(EC.visibility_of_element_located((By.ID, 'lastName')))
-    firstname_field = browser.find_element(By.ID, 'firstName')
-    lastname_field = browser.find_element(By.ID, 'lastName')
+    firstname_field = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID, 'firstName')))
+    lastname_field = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID, 'lastName')))
 
     assert firstname_field.text == contact_firstname
     assert lastname_field.text == contact_lastname
@@ -66,9 +63,30 @@ def test_ui_02_return_to_contact_list_from_contact_details(browser):
     contact_details_page.open()
 
     # Click to the Return to Contact List button
-    wait = WebDriverWait(browser, 10)
-    wait.until(EC.visibility_of_element_located((By.ID, 'return')))
-    return_button = browser.find_element(By.ID, 'return')
+    return_button = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID, 'return')))
     return_button.click()
     header = browser.find_element(By.XPATH, "//h1")
     assert header.text == "Contact List"
+
+
+@pytest.mark.contact_details
+@pytest.mark.acceptance
+# Test positive: Check the Delete button presence on the Contact Details page
+def test_ui_03_delete_button_is_on_contact_details(browser):
+    # Authorization
+    login_page = LoginPage(browser)
+    login_page.open()
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
+
+    # Open Contact List page, select any contact item
+    contact_list_page = ContactListPage(browser)
+    contact_list_page.open()
+    contact_item = contact_list_page.select_any_contact()
+    contact_item.click()
+
+    # Open Contact Details page, check the Delete button presence
+    contact_details_page = ContactDetailsPage(browser)
+    contact_details_page.open()
+
+    delete_button = contact_details_page.check_element(ContactDetailsPage.delete_button)
+    assert delete_button
