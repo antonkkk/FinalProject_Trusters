@@ -1,7 +1,6 @@
 import pytest
 import time
 from helper.send_request import send_request
-import copy
 
 
 def generate_random_email():
