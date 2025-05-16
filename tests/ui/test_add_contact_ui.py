@@ -3,169 +3,120 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.add_contact_page import AddContactPage
+from pages.login_page import LoginPage
+from test_data.user_creds import UserCreds
+from test_data.contact_template import ContactTemplate
+from test_data.env import Env
 
 
 @pytest.mark.smoke
 def test_verify_phone_number_field_negative(browser):
-    page = AddContactPage(browser)
-
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/login")
-    browser.find_element(By.ID, "email").send_keys("trusters_test@gmail.com")
-    browser.find_element(By.ID, "password").send_keys("1234567")
-    browser.find_element(By.ID, "submit").click()
+    login_page = LoginPage(browser)
+    login_page.open(Env.URL)
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+    ac_page = AddContactPage(browser)
+    ac_page.open(Env.URL_ac)
 
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/addContact")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.ID, "firstName")))
 
-    contact = {
-        "firstName": "John",
-        "lastName": "Doe",
-        "phone": "invalid_phone",
-        "street": "123 Elm St",
-        "city": "Metropolis",
-        "postalCode": "12345",
-        "birthdate": "1990-01-01"
-    }
-    page.fill_contact_form(contact)
-    page.submit()
+    ContactTemplate.contact_add["phone"] = "invalid_phone"
 
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    ac_page.fill_contact_form(ContactTemplate.contact_add)
+    ac_page.submit()
+
+    error_text = ac_page.get_error_text()
 
     assert "Contact validation failed: phone: Phone number is invalid" in error_text
 
 
 @pytest.mark.regression
 def test_input_more_than_max_chars_in_first_last_name(browser):
-    page = AddContactPage(browser)
-
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/login")
-    browser.find_element(By.ID, "email").send_keys("trusters_test@gmail.com")
-    browser.find_element(By.ID, "password").send_keys("1234567")
-    browser.find_element(By.ID, "submit").click()
+    login_page = LoginPage(browser)
+    login_page.open(Env.URL)
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+    ac_page = AddContactPage(browser)
+    ac_page.open(Env.URL_ac)
 
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/addContact")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.ID, "firstName")))
 
-    contact = {
-        "firstName": "A" * 256,
-        "lastName": "B" * 256,
-        "phone": "1234567890",
-        "street": "123 Elm St",
-        "city": "Metropolis",
-        "postalCode": "12345",
-        "birthdate": "1990-01-01"
-    }
-    page.fill_contact_form(contact)
-    page.submit()
+    ContactTemplate.contact_add["firstName"] = "A" * 256
+    ContactTemplate.contact_add["lastName"] = "B" * 256
 
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    ac_page.fill_contact_form(ContactTemplate.contact_add)
+    ac_page.submit()
+
+    error_text = ac_page.get_error_text()
 
     assert "firstName: Path `firstName`" in error_text or "lastName: Path `lastName`" in error_text
 
 
 @pytest.mark.regression
 def test_input_more_than_max_chars_in_phone(browser):
-    page = AddContactPage(browser)
-
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/login")
-    browser.find_element(By.ID, "email").send_keys("trusters_test@gmail.com")
-    browser.find_element(By.ID, "password").send_keys("1234567")
-    browser.find_element(By.ID, "submit").click()
+    login_page = LoginPage(browser)
+    login_page.open(Env.URL)
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+    ac_page = AddContactPage(browser)
+    ac_page.open(Env.URL_ac)
 
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/addContact")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.ID, "firstName")))
 
-    contact = {
-        "firstName": "John",
-        "lastName": "Doe",
-        "phone": "1" * 256,
-        "street": "123 Elm St",
-        "city": "Metropolis",
-        "postalCode": "12345",
-        "birthdate": "1990-01-01"
-    }
-    page.fill_contact_form(contact)
-    page.submit()
+    ContactTemplate.contact_add["phone"] = "1" * 256
 
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    ac_page.fill_contact_form(ContactTemplate.contact_add)
+    ac_page.submit()
+
+    error_text = ac_page.get_error_text()
 
     assert "phone" in error_text and "longer than the maximum allowed length" in error_text
 
 
 @pytest.mark.regression
 def test_input_more_than_max_chars_in_postal_code(browser):
-    page = AddContactPage(browser)
-
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/login")
-    browser.find_element(By.ID, "email").send_keys("trusters_test@gmail.com")
-    browser.find_element(By.ID, "password").send_keys("1234567")
-    browser.find_element(By.ID, "submit").click()
+    login_page = LoginPage(browser)
+    login_page.open(Env.URL)
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+    ac_page = AddContactPage(browser)
+    ac_page.open(Env.URL_ac)
 
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/addContact")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.ID, "firstName")))
 
-    contact = {
-        "firstName": "John",
-        "lastName": "Doe",
-        "phone": "1234567890",
-        "street": "123 Elm St",
-        "city": "Metropolis",
-        "postalCode": "123456789012345",
-        "birthdate": "1990-01-01"
-    }
-    page.fill_contact_form(contact)
-    page.submit()
+    ContactTemplate.contact_add["postalCode"] = "123456789012345"
 
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    ac_page.fill_contact_form(ContactTemplate.contact_add)
+    ac_page.submit()
+
+    error_text = ac_page.get_error_text()
 
     assert "postalCode" in error_text and "longer than the maximum allowed length" in error_text
 
 
 @pytest.mark.regression
 def test_submit_empty_required_fields(browser):
-    page = AddContactPage(browser)
-
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/login")
-    browser.find_element(By.ID, "email").send_keys("trusters_test@gmail.com")
-    browser.find_element(By.ID, "password").send_keys("1234567")
-    browser.find_element(By.ID, "submit").click()
+    login_page = LoginPage(browser)
+    login_page.open(Env.URL)
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+    ac_page = AddContactPage(browser)
+    ac_page.open(Env.URL_ac)
 
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/addContact")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.ID, "firstName")))
 
-    contact = {
-        "firstName": "",
-        "lastName": "",
-        "phone": "",
-        "street": "",
-        "city": "",
-        "postalCode": "",
-        "birthdate": ""
-    }
-    page.fill_contact_form(contact)
-    page.submit()
+    ContactTemplate.contact_add["firstName"] = ""
+    ContactTemplate.contact_add["lastName"] = ""
 
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    ac_page.fill_contact_form(ContactTemplate.contact_add)
+    ac_page.submit()
+
+    error_text = ac_page.get_error_text()
     assert "Contact validation failed" in error_text
     assert "firstName: Path `firstName` is required." in error_text
     assert "lastName: Path `lastName` is required." in error_text
@@ -173,19 +124,17 @@ def test_submit_empty_required_fields(browser):
 
 @pytest.mark.smoke
 def test_cancel_contact_creation_using_cancel_button(browser):
-    page = AddContactPage(browser)
-
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/login")
-    browser.find_element(By.ID, "email").send_keys("trusters_test@gmail.com")
-    browser.find_element(By.ID, "password").send_keys("1234567")
-    browser.find_element(By.ID, "submit").click()
+    login_page = LoginPage(browser)
+    login_page.open(Env.URL)
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+    ac_page = AddContactPage(browser)
+    ac_page.open(Env.URL_ac)
 
-    browser.get("https://thinking-tester-contact-list.herokuapp.com/addContact")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.ID, "firstName")))
 
-    page.cancel_creation()
+    ac_page.cancel_creation()
 
     WebDriverWait(browser, 5).until(
         EC.url_contains("/contactList")
