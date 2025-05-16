@@ -2,17 +2,14 @@ from selenium.webdriver.common.by import By
 import random
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from test_data.env import Env
+from pages.base_page import BasePage
 
 
-class ContactListPage:
+class ContactListPage(BasePage):
     all_contact_items = (By.CLASS_NAME, "contactTableBodyRow")
 
     def __init__(self, driver):
-        self.driver = driver
-
-    def open(self):
-        self.driver.get(Env.URL_contact_list)
+        super().__init__(driver)
 
     def select_any_contact(self, timeout=10):
         WebDriverWait(self.driver, timeout).until(

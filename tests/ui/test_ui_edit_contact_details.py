@@ -1,13 +1,12 @@
 import pytest
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.contact_details_page import ContactDetailsPage
 from pages.contact_list_page import ContactListPage
 from pages.edit_contact_details_page import EditContactPage
 from pages.login_page import LoginPage
 from test_data.user_creds import UserCreds
-from test_data.contact_template import ContactTemp
+from test_data.contact_template import ContactTemplate
+from test_data.env import Env
 
 
 @pytest.mark.contact_details
@@ -17,20 +16,19 @@ from test_data.contact_template import ContactTemp
 def test_ui_01_open_edit_contact_details(browser):
     # Authorization
     login_page = LoginPage(browser)
-    login_page.open()
+    login_page.open(Env.URL)
     login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     # Open Contact List page, select any contact item
-    contact_list_page = ContactListPage(browser)
-    contact_list_page.open()
-    contact_item = contact_list_page.select_any_contact()
+    cl_page = ContactListPage(browser)
+    cl_page.open(Env.URL_cl)
+    contact_item = cl_page.select_any_contact()
     contact_item.click()
 
     # Open Contact Details page, click Edit Contact button
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    edit_contact_button = WebDriverWait(
-        browser, 10).until(EC.visibility_of_element_located((By.ID, 'edit-contact')))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    edit_contact_button = cd_page.get_element(cd_page.edit_button)
     edit_contact_button.click()
 
     # Check Edit Contact page
@@ -45,44 +43,41 @@ def test_ui_01_open_edit_contact_details(browser):
 def test_ui_02_submit_edit_contact_changes(browser):
     # Authorization
     login_page = LoginPage(browser)
-    login_page.open()
+    login_page.open(Env.URL)
     login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     # Open Contact List page, select any contact item
-    contact_list_page = ContactListPage(browser)
-    contact_list_page.open()
-    contact_item = contact_list_page.select_any_contact()
+    cl_page = ContactListPage(browser)
+    cl_page.open(Env.URL_cl)
+    contact_item = cl_page.select_any_contact()
     contact_item.click()
 
     # Open Contact Details page, click Edit Contact button
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    edit_contact_button = WebDriverWait(
-        browser, 10).until(EC.visibility_of_element_located((By.ID, 'edit-contact')))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    edit_contact_button = cd_page.get_element(cd_page.edit_button)
     edit_contact_button.click()
 
     # Open Edit Contact page
-    edit_contact_page = EditContactPage(browser)
-    edit_contact_page.open()
+    ec_page = EditContactPage(browser)
+    ec_page.open(Env.URL_ec)
 
     # Clear and fill all Edit Contact page fields
-    edit_contact_page.wait_all_fields_visible()
-    edit_contact_page.clear_form()
+    ec_page.wait_all_fields_visible()
+    ec_page.clear_form()
 
-    edit_contact_page.fill_edit_contact_form(ContactTemp.contact_edit)
-    edit_contact_page.click_submit_button()
+    ec_page.fill_contact_form(ContactTemplate.contact_edit)
+    ec_page.click_submit_button()
 
     # Open Contact Details page
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    header = WebDriverWait(
-        browser, 10).until(
-        EC.visibility_of_element_located((By.XPATH, "//h1[text()='Contact Details']")))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    header = cd_page.get_element(cd_page.header)
     assert header.text == "Contact Details"
 
     # Check new values on Contact Details page
-    contact_details_page.wait_all_fields_visible()
-    assert contact_details_page.check_values(ContactTemp.contact_edit)
+    cd_page.wait_all_fields_visible()
+    assert cd_page.check_values(ContactTemplate.contact_edit)
 
 
 @pytest.mark.contact_details
@@ -92,40 +87,40 @@ def test_ui_02_submit_edit_contact_changes(browser):
 def test_ui_03_cancel_edit_contact_changes(browser):
     # Authorization
     login_page = LoginPage(browser)
-    login_page.open()
+    login_page.open(Env.URL)
     login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     # Open Contact List page, select any contact item
-    contact_list_page = ContactListPage(browser)
-    contact_list_page.open()
-    contact_item = contact_list_page.select_any_contact()
+    cl_page = ContactListPage(browser)
+    cl_page.open(Env.URL_cl)
+    contact_item = cl_page.select_any_contact()
     contact_item.click()
 
     # Open Contact Details page, click Edit Contact button
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    edit_contact_button = WebDriverWait(
-        browser, 10).until(EC.visibility_of_element_located((By.ID, 'edit-contact')))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    edit_contact_button = cd_page.get_element(cd_page.edit_button)
     edit_contact_button.click()
 
     # Open Edit Contact page
-    edit_contact_page = EditContactPage(browser)
-    edit_contact_page.open()
+    ec_page = EditContactPage(browser)
+    ec_page.open(Env.URL_ec)
+    browser.implicitly_wait(10)
 
     # Clear and fill all Edit Contact page fields
-    edit_contact_page.wait_all_fields_visible()
-    edit_contact_page.clear_form()
+    ec_page.wait_all_fields_visible()
+    ec_page.clear_form()
 
-    edit_contact_page.fill_edit_contact_form(ContactTemp.contact_cancel)
-    edit_contact_page.click_cancel_button()
+    ec_page.fill_contact_form(ContactTemplate.contact_cancel)
+    ec_page.click_cancel_button()
 
     # Open Contact Details page
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
 
     # Check new values are not applied on Contact Details page
-    contact_details_page.wait_all_fields_visible()
-    assert not contact_details_page.check_values(ContactTemp.contact_cancel)
+    cd_page.wait_all_fields_visible()
+    assert not cd_page.check_values(ContactTemplate.contact_cancel)
 
 
 @pytest.mark.contact_details
@@ -135,35 +130,32 @@ def test_ui_03_cancel_edit_contact_changes(browser):
 def test_ui_04_submit_edit_contact_with_empty_req_fields(browser):
     # Authorization
     login_page = LoginPage(browser)
-    login_page.open()
+    login_page.open(Env.URL)
     login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     # Open Contact List page, select any contact item
-    contact_list_page = ContactListPage(browser)
-    contact_list_page.open()
-    contact_item = contact_list_page.select_any_contact()
+    cl_page = ContactListPage(browser)
+    cl_page.open(Env.URL_cl)
+    contact_item = cl_page.select_any_contact()
     contact_item.click()
 
     # Open Contact Details page, click Edit Contact button
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    edit_contact_button = WebDriverWait(
-        browser, 10).until(EC.visibility_of_element_located((By.ID, 'edit-contact')))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    edit_contact_button = cd_page.get_element(cd_page.edit_button)
     edit_contact_button.click()
 
     # Open Edit Contact page
-    edit_contact_page = EditContactPage(browser)
-    edit_contact_page.open()
+    ec_page = EditContactPage(browser)
+    ec_page.open(Env.URL_ec)
 
     # Make empty required fields on Edit Contact page
-    edit_contact_page.wait_all_fields_visible()
-    edit_contact_page.clear_form()
-    edit_contact_page.click_submit_button()
+    ec_page.wait_all_fields_visible()
+    ec_page.clear_form()
+    ec_page.click_submit_button()
 
     # Check error message appears on Edit Contact page
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    error_text = ec_page.get_error_text()
     assert "Validation failed" in error_text
     assert "firstName: Path `firstName` is required." in error_text, "Firstname validation failed"
     assert "lastName: Path `lastName` is required." in error_text, "Lastname validation failed"
@@ -176,42 +168,39 @@ def test_ui_04_submit_edit_contact_with_empty_req_fields(browser):
 def test_ui_05_submit_edit_contact_with_invalid_format_values(browser):
     # Authorization
     login_page = LoginPage(browser)
-    login_page.open()
+    login_page.open(Env.URL)
     login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     # Open Contact List page, select any contact item
-    contact_list_page = ContactListPage(browser)
-    contact_list_page.open()
-    contact_item = contact_list_page.select_any_contact()
+    cl_page = ContactListPage(browser)
+    cl_page.open(Env.URL_cl)
+    contact_item = cl_page.select_any_contact()
     contact_item.click()
 
     # Open Contact Details page, click Edit Contact button
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    edit_contact_button = WebDriverWait(
-        browser, 10).until(EC.visibility_of_element_located((By.ID, 'edit-contact')))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    edit_contact_button = cd_page.get_element(cd_page.edit_button)
     edit_contact_button.click()
 
     # Open Edit Contact page
-    edit_contact_page = EditContactPage(browser)
-    edit_contact_page.open()
+    ec_page = EditContactPage(browser)
+    ec_page.open(Env.URL_ec)
 
     # Clear and fill all Edit Contact page fields
-    edit_contact_page.wait_all_fields_visible()
-    edit_contact_page.clear_form()
+    ec_page.wait_all_fields_visible()
+    ec_page.clear_form()
 
-    ContactTemp.contact_edit["postalCode"] = "postalcode"
-    ContactTemp.contact_edit["phone"] = "8-029-3665544"
-    ContactTemp.contact_edit["email"] = "email@"
-    ContactTemp.contact_edit["birthdate"] = "20-12-2000"
+    ContactTemplate.contact_edit["postalCode"] = "postalcode"
+    ContactTemplate.contact_edit["phone"] = "8-029-3665544"
+    ContactTemplate.contact_edit["email"] = "email@"
+    ContactTemplate.contact_edit["birthdate"] = "20-12-2000"
 
-    edit_contact_page.fill_edit_contact_form(ContactTemp.contact_edit)
-    edit_contact_page.click_submit_button()
+    ec_page.fill_contact_form(ContactTemplate.contact_edit)
+    ec_page.click_submit_button()
 
     # Check error message appears on Edit Contact page
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    error_text = ec_page.get_error_text()
     assert "Validation failed" in error_text
     assert "postalCode: Postal code is invalid" in error_text, "Postal Code validation failed"
     assert "phone: Phone number is invalid" in error_text, "Phone validation failed"
@@ -225,40 +214,37 @@ def test_ui_05_submit_edit_contact_with_invalid_format_values(browser):
 def test_ui_06_submit_edit_required_fields_with_over_len_values(browser):
     # Authorization
     login_page = LoginPage(browser)
-    login_page.open()
+    login_page.open(Env.URL)
     login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     # Open Contact List page, select any contact item
-    contact_list_page = ContactListPage(browser)
-    contact_list_page.open()
-    contact_item = contact_list_page.select_any_contact()
+    cl_page = ContactListPage(browser)
+    cl_page.open(Env.URL_cl)
+    contact_item = cl_page.select_any_contact()
     contact_item.click()
 
     # Open Contact Details page, click Edit Contact button
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    edit_contact_button = WebDriverWait(
-        browser, 10).until(EC.visibility_of_element_located((By.ID, 'edit-contact')))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    edit_contact_button = cd_page.get_element(cd_page.edit_button)
     edit_contact_button.click()
 
     # Open Edit Contact page
-    edit_contact_page = EditContactPage(browser)
-    edit_contact_page.open()
+    ec_page = EditContactPage(browser)
+    ec_page.open(Env.URL_ec)
 
     # Clear and fill all Edit Contact page fields
-    edit_contact_page.wait_all_fields_visible()
-    edit_contact_page.clear_form()
+    ec_page.wait_all_fields_visible()
+    ec_page.clear_form()
 
-    ContactTemp.contact_edit["firstName"] = "FirstNamemorethan20sy"
-    ContactTemp.contact_edit["lastName"] = "LastNamemorethan20sym"
+    ContactTemplate.contact_edit["firstName"] = "FirstNamemorethan20sy"
+    ContactTemplate.contact_edit["lastName"] = "LastNamemorethan20sym"
 
-    edit_contact_page.fill_edit_contact_form(ContactTemp.contact_edit)
-    edit_contact_page.click_submit_button()
+    ec_page.fill_contact_form(ContactTemplate.contact_edit)
+    ec_page.click_submit_button()
 
     # Check error message appears on Edit Contact page
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    error_text = ec_page.get_error_text()
     assert "Validation failed" in error_text
     assert "lastName: Path `lastName`" in error_text, "Lastname field validation failed"
     assert "firstName: Path `firstName`" in error_text, "Firstname field validation failed"
@@ -271,45 +257,42 @@ def test_ui_06_submit_edit_required_fields_with_over_len_values(browser):
 def test_ui_07_submit_edit_optional_fields_with_over_len_values(browser):
     # Authorization
     login_page = LoginPage(browser)
-    login_page.open()
+    login_page.open(Env.URL)
     login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
 
     # Open Contact List page, select any contact item
-    contact_list_page = ContactListPage(browser)
-    contact_list_page.open()
-    contact_item = contact_list_page.select_any_contact()
+    cl_page = ContactListPage(browser)
+    cl_page.open(Env.URL_cl)
+    contact_item = cl_page.select_any_contact()
     contact_item.click()
 
     # Open Contact Details page, click Edit Contact button
-    contact_details_page = ContactDetailsPage(browser)
-    contact_details_page.open()
-    edit_contact_button = WebDriverWait(
-        browser, 10).until(EC.visibility_of_element_located((By.ID, 'edit-contact')))
+    cd_page = ContactDetailsPage(browser)
+    cd_page.open(Env.URL_cd)
+    edit_contact_button = cd_page.get_element(cd_page.edit_button)
     edit_contact_button.click()
 
     # Open Edit Contact page
-    edit_contact_page = EditContactPage(browser)
-    edit_contact_page.open()
+    ec_page = EditContactPage(browser)
+    ec_page.open(Env.URL_ec)
 
     # Clear and fill all Edit Contact page fields
-    edit_contact_page.wait_all_fields_visible()
-    edit_contact_page.clear_form()
+    ec_page.wait_all_fields_visible()
+    ec_page.clear_form()
 
-    ContactTemp.contact_edit["postalCode"] = "12345678901"
-    ContactTemp.contact_edit["phone"] = "1234567890123456"
-    ContactTemp.contact_edit["city"] = "MyLongCityMyLongCity MyLongCityMyLongCity"
+    ContactTemplate.contact_edit["postalCode"] = "12345678901"
+    ContactTemplate.contact_edit["phone"] = "1234567890123456"
+    ContactTemplate.contact_edit["city"] = "MyLongCityMyLongCity MyLongCityMyLongCity"
 
-    edit_contact_page.fill_edit_contact_form(ContactTemp.contact_edit)
-    edit_contact_page.click_submit_button()
+    ec_page.fill_contact_form(ContactTemplate.contact_edit)
+    ec_page.click_submit_button()
 
     # Check error message appears on Edit Contact page
-    error_text = WebDriverWait(browser, 5).until(
-        EC.visibility_of_element_located((By.ID, "error"))
-    ).text
+    error_text = ec_page.get_error_text()
     assert "Validation failed" in error_text
-    assert (f'postalCode: Path `postalCode` (`{ContactTemp.contact_edit["postalCode"]}`) is longer'
+    assert (f'postalCode: Path `postalCode` (`{ContactTemplate.contact_edit["postalCode"]}`) is longer'
             f' than the maximum allowed length (10)') in error_text, "Postal Code validation failed"
-    assert (f'city: Path `city` (`{ContactTemp.contact_edit["city"]}`) is longer'
+    assert (f'city: Path `city` (`{ContactTemplate.contact_edit["city"]}`) is longer'
             f' than the maximum allowed length (40)') in error_text, "City validation failed"
-    assert (f'phone: Path `phone` (`{ContactTemp.contact_edit["phone"]}`) is longer'
+    assert (f'phone: Path `phone` (`{ContactTemplate.contact_edit["phone"]}`) is longer'
             f' than the maximum allowed length (15)') in error_text, "Phone validation failed"

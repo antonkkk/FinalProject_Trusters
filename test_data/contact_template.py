@@ -1,4 +1,4 @@
-class ContactTemp:
+class ContactTemplate:
     contact_edit = {
         "firstName": "1testName",
         "lastName": "2testName",

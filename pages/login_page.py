@@ -1,17 +1,14 @@
 from selenium.webdriver.common.by import By
-from test_data.env import Env
+from pages.base_page import BasePage
 
 
-class LoginPage:
+class LoginPage(BasePage):
     email = (By.ID, "email")
     password = (By.ID, "password")
     submit_button = (By.ID, "submit")
 
     def __init__(self, driver):
-        self.driver = driver
-
-    def open(self):
-        self.driver.get(Env.URL)
+        super().__init__(driver)
 
     def complete_login(self, email, password):
         self.driver.find_element(*self.email).send_keys(email)
