@@ -34,11 +34,14 @@ class BasePage:
             *Locators.locators["birthdate"]).send_keys(contact.get("birthdate", ""))
         self.driver.find_element(*Locators.locators["email"]).send_keys(contact.get("email", ""))
         self.driver.find_element(*Locators.locators["phone"]).send_keys(contact.get("phone", ""))
-        self.driver.find_element(*Locators.locators["street1"]).send_keys(contact.get("street1", ""))
-        self.driver.find_element(*Locators.locators["street2"]).send_keys(contact.get("street2", ""))
+        self.driver.find_element(
+            *Locators.locators["street1"]).send_keys(contact.get("street1", ""))
+        self.driver.find_element(
+            *Locators.locators["street2"]).send_keys(contact.get("street2", ""))
         self.driver.find_element(*Locators.locators["city"]).send_keys(contact.get("city", ""))
         self.driver.find_element(
             *Locators.locators["stateProvince"]).send_keys(contact.get("stateProvince", ""))
         self.driver.find_element(
             *Locators.locators["postalCode"]).send_keys(contact.get("postalCode", ""))
-        self.driver.find_element(*Locators.locators["country"]).send_keys(contact.get("country", ""))
+        self.driver.find_element(
+            *Locators.locators["country"]).send_keys(contact.get("country", ""))
