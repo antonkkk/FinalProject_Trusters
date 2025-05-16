@@ -291,7 +291,7 @@ def test_ui_07_submit_edit_optional_fields_with_over_len_values(browser):
     error_text = ec_page.get_error_text()
     assert "Validation failed" in error_text
     assert (f'postalCode: Path `postalCode` (`{ContactTemplate.contact_edit["postalCode"]}`) is'
-            f' longer than the maximum allowed length (10)') in error_text,\
+            f' longer than the maximum allowed length (10)') in error_text, \
         "Postal Code validation failed"
     assert (f'city: Path `city` (`{ContactTemplate.contact_edit["city"]}`) is longer'
             f' than the maximum allowed length (40)') in error_text, "City validation failed"
