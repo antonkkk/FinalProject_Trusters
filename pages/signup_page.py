@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from test_data.user_creds import UserCreds
 from helper.utils import generate_random_email
 from pages.base_page import BasePage
+from selenium.common.exceptions import TimeoutException
 
 
 class SignupPage(BasePage):
@@ -17,8 +17,10 @@ class SignupPage(BasePage):
     LOGOUT_BUTTON = (By.ID, "logout")
 
     def should_be_signup_page(self):
-        assert self.get_element(self.FIRST_NAME_INPUT).is_displayed(), "First name input not visible"
-        assert self.get_element(self.SUBMIT_BUTTON).is_enabled(), "Submit button not enabled"
+        assert self.get_element(self.FIRST_NAME_INPUT).is_displayed(), \
+            "First name input not visible"
+        assert self.get_element(self.SUBMIT_BUTTON).is_enabled(), \
+            "Submit button not enabled"
 
     def fill_first_name(self, value):
         self.get_element(self.FIRST_NAME_INPUT).send_keys(value)
@@ -53,5 +55,5 @@ class SignupPage(BasePage):
                 EC.visibility_of_element_located((By.ID, "error"))
             )
             return message_text in error_element.text
-        except:
+        except TimeoutException:
             return False
