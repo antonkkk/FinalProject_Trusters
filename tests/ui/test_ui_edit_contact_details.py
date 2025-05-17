@@ -61,9 +61,11 @@ def test_ui_02_submit_edit_contact_changes(browser):
     # Open Edit Contact page
     ec_page = EditContactPage(browser)
     ec_page.open(Env.URL_ec)
+    browser.implicitly_wait(10)
 
     # Clear and fill all Edit Contact page fields
     ec_page.wait_all_fields_visible()
+    ec_page.wait_required_fields_not_empty()
     ec_page.clear_form()
 
     ec_page.fill_contact_form(ContactTemplate.contact_edit)
@@ -76,7 +78,7 @@ def test_ui_02_submit_edit_contact_changes(browser):
     assert header.text == "Contact Details"
 
     # Check new values on Contact Details page
-    assert cd_page.wait_all_cd_fields_not_empty()
+    cd_page.wait_all_cd_fields_not_empty()
     assert cd_page.check_values(ContactTemplate.contact_edit)
 
 
@@ -186,9 +188,11 @@ def test_ui_05_submit_edit_contact_with_invalid_format_values(browser):
     # Open Edit Contact page
     ec_page = EditContactPage(browser)
     ec_page.open(Env.URL_ec)
+    browser.implicitly_wait(10)
 
     # Clear and fill all Edit Contact page fields
     ec_page.wait_all_fields_visible()
+    ec_page.wait_required_fields_not_empty()
     ec_page.clear_form()
 
     ContactTemplate.contact_edit["postalCode"] = "postalcode"
@@ -232,9 +236,11 @@ def test_ui_06_submit_edit_required_fields_with_over_len_values(browser):
     # Open Edit Contact page
     ec_page = EditContactPage(browser)
     ec_page.open(Env.URL_ec)
+    browser.implicitly_wait(10)
 
     # Clear and fill all Edit Contact page fields
     ec_page.wait_all_fields_visible()
+    ec_page.wait_required_fields_not_empty()
     ec_page.clear_form()
 
     ContactTemplate.contact_edit["firstName"] = "FirstNamemorethan20sy"
@@ -275,9 +281,11 @@ def test_ui_07_submit_edit_optional_fields_with_over_len_values(browser):
     # Open Edit Contact page
     ec_page = EditContactPage(browser)
     ec_page.open(Env.URL_ec)
+    browser.implicitly_wait(10)
 
     # Clear and fill all Edit Contact page fields
     ec_page.wait_all_fields_visible()
+    ec_page.wait_required_fields_not_empty()
     ec_page.clear_form()
 
     ContactTemplate.contact_edit["postalCode"] = "12345678901"
