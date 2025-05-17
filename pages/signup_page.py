@@ -49,10 +49,10 @@ class SignupPage(BasePage):
     def click_cancel(self):
         self.get_element(self.CANCEL_BUTTON).click()
 
-    def is_error_message_present(self, message_text="Email address is already in use"):
+    def is_error_message_present(self, message_text):
         try:
             error_element = WebDriverWait(self.driver, 3).until(
-                EC.visibility_of_element_located((By.ID, "error"))
+                EC.visibility_of_element_located(self.ERROR_MESSAGE)
             )
             return message_text in error_element.text
         except TimeoutException:

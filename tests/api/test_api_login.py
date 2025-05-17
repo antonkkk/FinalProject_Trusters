@@ -19,7 +19,7 @@ def test_successful_login(read_config, read_user_creds):
 
 
 @pytest.mark.login
-def test_login_with_invalid_password(read_config, read_user_creds):
+def test_negative_login_with_invalid_password(read_config, read_user_creds):
     url = f'{read_config["URL"]}/users/login'
 
     payload = {
