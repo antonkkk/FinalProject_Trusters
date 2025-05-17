@@ -150,8 +150,8 @@ def test_ui_04_submit_edit_contact_with_empty_req_fields(browser):
     ec_page.open(Env.URL_ec)
 
     # Make empty required fields on Edit Contact page
-    ec_page.wait_all_fields_visible()
-    ec_page.clear_form()
+    ec_page.wait_required_fields_not_empty()
+    ec_page.clear_required_fields()
     ec_page.click_submit_button()
 
     # Check error message appears on Edit Contact page
