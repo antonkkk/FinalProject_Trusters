@@ -1,11 +1,6 @@
 import pytest
-import time
-from helper.send_request import send_request
-
-
-def generate_random_email():
-    random_part = str(time.time())
-    return f"autotest_{random_part}@example.com"
+from helper.utils import send_request
+from helper.utils import generate_random_email
 
 
 @pytest.mark.sign_up
