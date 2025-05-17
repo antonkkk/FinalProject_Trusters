@@ -1,5 +1,4 @@
 import pytest
-import time
 from helper.utils import send_request
 from helper.utils import generate_random_email
 
