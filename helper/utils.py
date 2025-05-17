@@ -1,4 +1,5 @@
 import requests
+import time
 
 
 def send_request(
@@ -22,3 +23,8 @@ def send_request(
         )
 
     return response  # <-- именно объект response!
+
+
+def generate_random_email():
+    random_part = str(time.time())
+    return f"autotest_{random_part}@example.com"

@@ -11,10 +11,13 @@ class BasePage:
     def open(self, url):
         self.driver.get(url)
 
+    def should_be_logged_in(self):
+        self.get_element((By.ID, "logout")), \
+            "Logout button not found — user is likely not logged in"
+
     def get_element(self, locator):
-        element = WebDriverWait(
+        return WebDriverWait(
             self.driver, 10).until(EC.visibility_of_element_located(locator))
-        return element
 
     def get_error_text(self):
         error = WebDriverWait(self.driver, 5).until(

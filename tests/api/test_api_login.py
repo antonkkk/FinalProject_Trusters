@@ -1,5 +1,5 @@
 import pytest
-from helper.send_request import send_request
+from helper.utils import send_request
 
 
 @pytest.mark.login
