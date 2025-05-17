@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from test_data.contact_fields_locators import Locators
 
 
@@ -20,15 +21,46 @@ class BasePage:
             self.driver, 10).until(EC.visibility_of_element_located(locator))
 
     def get_error_text(self):
-        error = WebDriverWait(self.driver, 5).until(
+        error_element = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((By.ID, "error"))
         )
-        return error.text
+        # Wait until value in error element become not null
+        WebDriverWait(self.driver, 10).until(
+            lambda driver: error_element.get_attribute('value') != ''
+        )
+        return error_element.text
 
     def wait_all_fields_visible(self):
         for key in Locators.locators:
             WebDriverWait(
                 self.driver, 15).until(EC.visibility_of_element_located(Locators.locators[key]))
+
+    def wait_all_cd_fields_not_empty(self):
+        for key in Locators.locators:
+            try:
+                element = WebDriverWait(self.driver, 15).until(
+                    EC.visibility_of_element_located(Locators.locators[key])
+                )
+                WebDriverWait(self.driver, 10).until(
+                    lambda driver: element.get_attribute('value') != ''
+                )
+            except TimeoutException:
+                return False
+        return True
+
+    def wait_required_fields_not_empty(self):
+        required = [Locators.locators["firstName"], Locators.locators["lastName"]]
+        for locator in required:
+            try:
+                element = WebDriverWait(self.driver, 15).until(
+                    EC.visibility_of_element_located(locator)
+                )
+                WebDriverWait(self.driver, 10).until(
+                    lambda driver: element.get_attribute('value') != ''
+                )
+            except TimeoutException:
+                return False
+        return True
 
     def fill_contact_form(self, contact):
         self.driver.find_element(*Locators.locators["firstName"]).send_keys(contact["firstName"])

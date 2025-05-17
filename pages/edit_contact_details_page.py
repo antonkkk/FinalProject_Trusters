@@ -16,6 +16,16 @@ class EditContactPage(BasePage):
             upd_field = self.driver.find_element(*Locators.locators[key])
             upd_field.clear()
 
+    def clear_required_fields(self):
+        firstname = self.driver.find_element(*Locators.locators["firstName"])
+        firstname.clear()
+        lastname = self.driver.find_element(*Locators.locators["lastName"])
+        lastname.clear()
+
+    def fill_required_fields(self, contact):
+        self.driver.find_element(*Locators.locators["firstName"]).send_keys(contact["firstName"])
+        self.driver.find_element(*Locators.locators["lastName"]).send_keys(contact["lastName"])
+
     def click_submit_button(self):
         self.driver.find_element(*self.submit_button).click()
 

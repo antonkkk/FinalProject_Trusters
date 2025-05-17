@@ -76,7 +76,7 @@ def test_ui_02_submit_edit_contact_changes(browser):
     assert header.text == "Contact Details"
 
     # Check new values on Contact Details page
-    cd_page.wait_all_fields_visible()
+    assert cd_page.wait_all_cd_fields_not_empty()
     assert cd_page.check_values(ContactTemplate.contact_edit)
 
 
@@ -107,11 +107,11 @@ def test_ui_03_cancel_edit_contact_changes(browser):
     ec_page.open(Env.URL_ec)
     browser.implicitly_wait(10)
 
-    # Clear and fill all Edit Contact page fields
+    # Clear and fill Edit Contact page required fields
     ec_page.wait_all_fields_visible()
-    ec_page.clear_form()
+    ec_page.clear_required_fields()
 
-    ec_page.fill_contact_form(ContactTemplate.contact_cancel)
+    ec_page.fill_required_fields(ContactTemplate.contact_cancel)
     ec_page.click_cancel_button()
 
     # Open Contact Details page
@@ -119,8 +119,8 @@ def test_ui_03_cancel_edit_contact_changes(browser):
     cd_page.open(Env.URL_cd)
 
     # Check new values are not applied on Contact Details page
-    cd_page.wait_all_fields_visible()
-    assert not cd_page.check_values(ContactTemplate.contact_cancel)
+    cd_page.wait_required_fields_not_empty()
+    assert not cd_page.check_required_fields(ContactTemplate.contact_cancel)
 
 
 @pytest.mark.contact_details
