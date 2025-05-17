@@ -23,3 +23,14 @@ class ContactDetailsPage(BasePage):
                 flag = False
                 break
         return flag
+
+    # Check required fields on Contact Details page after update on Edit Contact page
+    def check_required_fields(self, contact):
+        required = [Locators.locators["firstName"], Locators.locators["lastName"]]
+        flag = True
+        for locator in required:
+            new_field = self.driver.find_element(*locator)
+            if new_field.text != contact[locator[1]]:
+                flag = False
+                break
+        return flag
