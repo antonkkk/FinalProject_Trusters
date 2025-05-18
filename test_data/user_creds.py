@@ -1,8 +1,9 @@
 class UserCreds:
     valid_email = 'trusters_test@gmail.com'
+    invalid_format_email = "trusters_test-gmail.com"
     valid_password = '1234567'
-    empty_empty = ''
+    invalid_password = '123'
+    empty_email = ''
     empty_password = ''
-    signup_valid_name = 'Test'
-    signup_valid_lastname = 'User'
-    signup_valid_pass = 'Test1234'
+    valid_firstname = 'Test'
+    valid_lastname = 'User'

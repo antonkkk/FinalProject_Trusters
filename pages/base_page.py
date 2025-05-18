@@ -9,6 +9,8 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
 
+    LOGOUT_BUTTON = (By.ID, "logout")
+
     def open(self, url):
         self.driver.get(url)
 
@@ -21,14 +23,15 @@ class BasePage:
             self.driver, 10).until(EC.visibility_of_element_located(locator))
 
     def get_error_text(self):
-        error_element = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located((By.ID, "error"))
-        )
-        # Wait until value in error element become not null
-        WebDriverWait(self.driver, 10).until(
-            lambda driver: error_element.get_attribute('value') != ''
-        )
-        return error_element.text
+        try:
+            error_element = WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.ID, "error"))
+            )
+            # In case error value attribute is non-empty, return text
+            return error_element.text.strip()
+        # In case error value attribute is empty, return empty string
+        except TimeoutException:
+            return ""
 
     def wait_all_fields_visible(self):
         for key in Locators.locators:
@@ -80,3 +83,7 @@ class BasePage:
             *Locators.locators["postalCode"]).send_keys(contact.get("postalCode", ""))
         self.driver.find_element(
             *Locators.locators["country"]).send_keys(contact.get("country", ""))
+
+    def click_logout(self):
+        self.get_element(self.LOGOUT_BUTTON).click()
+        self.get_element((By.ID, "signup"))

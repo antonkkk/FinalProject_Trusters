@@ -3,14 +3,26 @@ from pages.base_page import BasePage
 
 
 class LoginPage(BasePage):
-    email = (By.ID, "email")
-    password = (By.ID, "password")
-    submit_button = (By.ID, "submit")
+    EMAIL_INPUT = (By.ID, "email")
+    PASSWORD_INPUT = (By.ID, "password")
+    SUBMIT_BUTTON = (By.ID, "submit")
+    ERROR_MESSAGE = (By.ID, "error")
+    LOGOUT_BUTTON = (By.ID, "logout")
 
-    def __init__(self, driver):
-        super().__init__(driver)
+    def fill_email(self, value):
+        self.get_element(self.EMAIL_INPUT).send_keys(value)
+
+    def fill_password(self, value):
+        self.get_element(self.PASSWORD_INPUT).send_keys(value)
+
+    def click_submit(self):
+        self.get_element(self.SUBMIT_BUTTON).click()
 
     def complete_login(self, email, password):
-        self.driver.find_element(*self.email).send_keys(email)
-        self.driver.find_element(*self.password).send_keys(password)
-        self.driver.find_element(*self.submit_button).click()
+        self.fill_email(email)
+        self.fill_password(password)
+        self.click_submit()
+
+    def should_be_login_page(self):
+        assert self.get_element(self.EMAIL_INPUT).is_displayed(), "Email input not visible"
+        assert self.get_element(self.SUBMIT_BUTTON).is_enabled(), "Submit button not enabled"

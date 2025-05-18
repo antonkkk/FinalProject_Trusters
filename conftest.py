@@ -1,12 +1,18 @@
 import json
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from helper.utils import send_request
 
 
 @pytest.fixture(scope="function")
 def browser():
-    driver = webdriver.Chrome()  # Или другой браузер
+    options = Options()
+    options.add_argument("--incognito")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-save-password-bubble")
+
+    driver = webdriver.Chrome()
     yield driver
     driver.quit()
 
