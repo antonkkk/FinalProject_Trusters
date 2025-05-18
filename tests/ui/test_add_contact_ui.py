@@ -7,8 +7,10 @@ from pages.login_page import LoginPage
 from test_data.user_creds import UserCreds
 from test_data.contact_template import ContactTemplate
 from test_data.env import Env
+from helper.utils import generate_random_email
 
 
+@pytest.mark.add_contact
 @pytest.mark.smoke
 def test_verify_phone_number_field_negative(browser):
     login_page = LoginPage(browser)
@@ -31,6 +33,7 @@ def test_verify_phone_number_field_negative(browser):
     assert "Contact validation failed: phone: Phone number is invalid" in error_text
 
 
+@pytest.mark.add_contact
 @pytest.mark.regression
 def test_input_more_than_max_chars_in_first_last_name(browser):
     login_page = LoginPage(browser)
@@ -54,6 +57,7 @@ def test_input_more_than_max_chars_in_first_last_name(browser):
     assert "firstName: Path `firstName`" in error_text or "lastName: Path `lastName`" in error_text
 
 
+@pytest.mark.add_contact
 @pytest.mark.regression
 def test_input_more_than_max_chars_in_phone(browser):
     login_page = LoginPage(browser)
@@ -76,6 +80,7 @@ def test_input_more_than_max_chars_in_phone(browser):
     assert "phone" in error_text and "longer than the maximum allowed length" in error_text
 
 
+@pytest.mark.add_contact
 @pytest.mark.regression
 def test_input_more_than_max_chars_in_postal_code(browser):
     login_page = LoginPage(browser)
@@ -98,6 +103,7 @@ def test_input_more_than_max_chars_in_postal_code(browser):
     assert "postalCode" in error_text and "longer than the maximum allowed length" in error_text
 
 
+@pytest.mark.add_contact
 @pytest.mark.regression
 def test_submit_empty_required_fields(browser):
     login_page = LoginPage(browser)
@@ -122,6 +128,7 @@ def test_submit_empty_required_fields(browser):
     assert "lastName: Path `lastName` is required." in error_text
 
 
+@pytest.mark.add_contact
 @pytest.mark.smoke
 def test_cancel_contact_creation_using_cancel_button(browser):
     login_page = LoginPage(browser)
@@ -141,3 +148,34 @@ def test_cancel_contact_creation_using_cancel_button(browser):
     )
 
     assert browser.current_url == "https://thinking-tester-contact-list.herokuapp.com/contactList"
+
+
+@pytest.mark.add_contact
+@pytest.mark.logout
+@pytest.mark.regression
+def test_logout_while_add_contact_from_partially_filled(browser):
+    login_page = LoginPage(browser)
+    login_page.open(Env.URL)
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
+
+    WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+
+    ac_page = AddContactPage(browser)
+    ac_page.open(Env.URL_ac)
+
+    WebDriverWait(browser, 5).until(EC.presence_of_element_located(ac_page.FIRST_NAME))
+
+    ac_page.fill_first_name(UserCreds.valid_firstname)
+    unique_email = generate_random_email()
+    ac_page.fill_email(unique_email)
+
+    ac_page.click_logout()
+
+    login_page.should_be_login_page()
+
+    login_page.complete_login(UserCreds.valid_email, UserCreds.valid_password)
+    WebDriverWait(browser, 5).until(EC.url_contains("/contactList"))
+
+    contacts_emails = ac_page.get_contacts_emails()
+    assert unique_email not in contacts_emails, \
+        "Contact with partially filled email should NOT be saved after logout"
