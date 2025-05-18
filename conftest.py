@@ -1,8 +1,8 @@
 import json
 import pytest
 from selenium import webdriver
-from helper.utils import send_request
 from selenium.webdriver.chrome.options import Options
+from helper.utils import send_request
 
 
 @pytest.fixture(scope="function")
