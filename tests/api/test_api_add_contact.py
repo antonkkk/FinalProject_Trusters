@@ -2,6 +2,8 @@ import pytest
 from helper.utils import send_request
 
 
+@pytest.mark.add_contact
+@pytest.mark.smoke
 @pytest.mark.acceptance
 def test_add_contact_with_all_valid_fields(read_config, read_user_creds):
     login_url = f'{read_config["URL"]}/users/login'
@@ -26,6 +28,7 @@ def test_add_contact_with_all_valid_fields(read_config, read_user_creds):
     assert response.status_code in (200, 201), f"Failed to add contact: {response.text}"
 
 
+@pytest.mark.add_contact
 @pytest.mark.regression
 def test_submit_with_invalid_email_format(read_config, read_user_creds):
     login_url = f'{read_config["URL"]}/users/login'
@@ -49,6 +52,7 @@ def test_submit_with_invalid_email_format(read_config, read_user_creds):
     assert "email" in response.json()["errors"]
 
 
+@pytest.mark.add_contact
 @pytest.mark.regression
 def test_verify_invalid_birthdate_format(read_config, read_user_creds):
     login_url = f'{read_config["URL"]}/users/login'
@@ -70,7 +74,9 @@ def test_verify_invalid_birthdate_format(read_config, read_user_creds):
     assert "birthdate" in response.json()["errors"]
 
 
+@pytest.mark.add_contact
 @pytest.mark.acceptance
+@pytest.mark.regression
 def test_add_contact_with_only_required_fields(read_config, read_user_creds):
     login_url = f'{read_config["URL"]}/users/login'
     response = send_request("POST", login_url, json=read_user_creds)
