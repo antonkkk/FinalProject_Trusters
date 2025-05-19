@@ -1,4 +1,5 @@
 import pytest
+import allure
 from selenium.webdriver.common.by import By
 from pages.contact_details_page import ContactDetailsPage
 from pages.contact_list_page import ContactListPage
@@ -7,10 +8,12 @@ from test_data.user_creds import UserCreds
 from test_data.env import Env
 
 
-@pytest.mark.contact_details
-@pytest.mark.smoke
-@pytest.mark.acceptance
 # Test positive: open Contact Details page for target contact
+@allure.feature("View contact functionality")
+@pytest.mark.contact_details
+@pytest.mark.acceptance
+@pytest.mark.regression
+@pytest.mark.smoke
 def test_ui_01_view_contact_details(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -42,9 +45,11 @@ def test_ui_01_view_contact_details(browser):
     assert lastname_field.text == contact_lastname
 
 
+# Test positive: return to Contact List page from Contact Details page
+@allure.feature("View contact functionality")
 @pytest.mark.contact_details
 @pytest.mark.acceptance
-# Test positive: return to Contact List page from Contact Details page
+@pytest.mark.regression
 def test_ui_02_return_to_contact_list_from_contact_details(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -68,9 +73,11 @@ def test_ui_02_return_to_contact_list_from_contact_details(browser):
     assert header.text == "Contact List"
 
 
-@pytest.mark.contact_details
-@pytest.mark.acceptance
 # Test positive: Check the Delete button presence on the Contact Details page
+@allure.feature("Delete functionality")
+@pytest.mark.delete_contact
+@pytest.mark.acceptance
+@pytest.mark.regression
 def test_ui_03_delete_button_is_on_contact_details(browser):
     # Authorization
     login_page = LoginPage(browser)

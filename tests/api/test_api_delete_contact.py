@@ -1,11 +1,14 @@
 import pytest
+import allure
 from helper.utils import send_request
 
 
 # Test positive: delete contact by id
+@allure.feature("Delete functionality")
 @pytest.mark.delete_contact
 @pytest.mark.smoke
 @pytest.mark.acceptance
+@pytest.mark.regression
 def test_api_01_delete_contact(read_config, read_user_creds, read_contact_temp):
     # Authorization
     URL = f'{read_config["URL"]}/users/login'
@@ -31,9 +34,9 @@ def test_api_01_delete_contact(read_config, read_user_creds, read_contact_temp):
 
 
 # Test negative: delete unknown contact by id
+@allure.feature("Delete functionality")
 @pytest.mark.delete_contact
 @pytest.mark.regression
-@pytest.mark.acceptance
 def test_api_02_delete_unknown_contact(read_config, read_user_creds, read_contact_temp):
     # Authorization
     URL = f'{read_config["URL"]}/users/login'

@@ -1,7 +1,10 @@
 import pytest
+import allure
 from helper.utils import send_request
 
 
+@allure.feature("Login functionality")
+@pytest.mark.smoke
 @pytest.mark.login
 def test_successful_login(read_config, read_user_creds):
     url = f'{read_config["URL"]}/users/login'
@@ -18,6 +21,7 @@ def test_successful_login(read_config, read_user_creds):
     assert "token" in response.json()
 
 
+@allure.feature("Login functionality")
 @pytest.mark.login
 def test_negative_login_with_invalid_password(read_config, read_user_creds):
     url = f'{read_config["URL"]}/users/login'
@@ -35,6 +39,7 @@ def test_negative_login_with_invalid_password(read_config, read_user_creds):
         f"Expected empty response body, got: {response.text}"
 
 
+@allure.feature("Login functionality")
 @pytest.mark.login
 def test_negative_login_with_invalid_email(read_config):
     url = f'{read_config["URL"]}/users/login'
@@ -52,6 +57,7 @@ def test_negative_login_with_invalid_email(read_config):
         f"Expected empty response body, got: {response.text}"
 
 
+@allure.feature("Login functionality")
 @pytest.mark.login
 def test_negative_login_with_empty_password(read_config, read_user_creds):
     url = f'{read_config["URL"]}/users/login'
@@ -69,6 +75,7 @@ def test_negative_login_with_empty_password(read_config, read_user_creds):
         f"Expected empty response body, got: {response.text}"
 
 
+@allure.feature("Login functionality")
 @pytest.mark.login
 def test_negative_login_with_empty_email(read_config):
     url = f'{read_config["URL"]}/users/login'

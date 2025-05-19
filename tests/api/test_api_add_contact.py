@@ -1,7 +1,9 @@
 import pytest
+import allure
 from helper.utils import send_request
 
 
+@allure.feature("Add contact functionality")
 @pytest.mark.add_contact
 @pytest.mark.smoke
 @pytest.mark.acceptance
@@ -28,6 +30,7 @@ def test_add_contact_with_all_valid_fields(read_config, read_user_creds):
     assert response.status_code in (200, 201), f"Failed to add contact: {response.text}"
 
 
+@allure.feature("Add contact functionality")
 @pytest.mark.add_contact
 @pytest.mark.regression
 def test_submit_with_invalid_email_format(read_config, read_user_creds):
@@ -52,6 +55,7 @@ def test_submit_with_invalid_email_format(read_config, read_user_creds):
     assert "email" in response.json()["errors"]
 
 
+@allure.feature("Add contact functionality")
 @pytest.mark.add_contact
 @pytest.mark.regression
 def test_verify_invalid_birthdate_format(read_config, read_user_creds):
@@ -74,6 +78,7 @@ def test_verify_invalid_birthdate_format(read_config, read_user_creds):
     assert "birthdate" in response.json()["errors"]
 
 
+@allure.feature("Add contact functionality")
 @pytest.mark.add_contact
 @pytest.mark.acceptance
 @pytest.mark.regression

@@ -1,9 +1,11 @@
 import pytest
+import allure
 from pages.signup_page import SignupPage
 from test_data.env import Env
 from test_data.user_creds import UserCreds
 
 
+@allure.feature("Signup functionality")
 @pytest.mark.sign_up
 @pytest.mark.smoke
 @pytest.mark.acceptance
@@ -25,6 +27,7 @@ def test_successful_signup(browser):
         "Unexpected error: Email already in use"
 
 
+@allure.feature("Signup functionality")
 @pytest.mark.sign_up
 @pytest.mark.acceptance
 @pytest.mark.regression
@@ -47,6 +50,7 @@ def test_signup_existing_email(browser):
         "Expected error message not shown for existing email"
 
 
+@allure.feature("Signup functionality")
 @pytest.mark.sign_up
 @pytest.mark.regression
 def test_signup_missing_fields(browser):
@@ -73,6 +77,7 @@ def test_signup_missing_fields(browser):
         "The error does not highlight missing email"
 
 
+@allure.feature("Signup functionality")
 @pytest.mark.sign_up
 @pytest.mark.regression
 def test_signup_invalid_email_format(browser):
