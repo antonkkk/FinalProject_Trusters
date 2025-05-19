@@ -1,11 +1,14 @@
 import pytest
+import allure
 from helper.utils import send_request
 
 
 # Test positive: get contact details by id
+@allure.feature("View contact functionality")
 @pytest.mark.contact_details
 @pytest.mark.smoke
 @pytest.mark.acceptance
+@pytest.mark.regression
 def test_api_01_view_contact_details(
         read_config, read_user_creds, read_contact_temp):
     # Authorization
@@ -31,6 +34,7 @@ def test_api_01_view_contact_details(
 
 
 # Test negative: get unknown contact details by id
+@allure.feature("View contact functionality")
 @pytest.mark.contact_details
 @pytest.mark.regression
 @pytest.mark.acceptance

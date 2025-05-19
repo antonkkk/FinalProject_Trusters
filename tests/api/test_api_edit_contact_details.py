@@ -1,11 +1,14 @@
 import pytest
+import allure
 from helper.utils import send_request
 
 
 # Test positive: update all contact details fields
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
 @pytest.mark.smoke
 @pytest.mark.acceptance
+@pytest.mark.regression
 def test_api_01_update_cd(read_config, read_user_creds, read_contact_temp):
     # Authorization
     URL = f'{read_config["URL"]}/users/login'
@@ -43,6 +46,7 @@ def test_api_01_update_cd(read_config, read_user_creds, read_contact_temp):
 
 
 # Test positive: partial update contact details fields
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
 @pytest.mark.acceptance
 @pytest.mark.regression
@@ -76,9 +80,11 @@ def test_api_02_partial_update_cd(read_config, read_user_creds, read_contact_tem
 
 
 #  Test negative: update contact details with empty required fields
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
 @pytest.mark.smoke
 @pytest.mark.acceptance
+@pytest.mark.regression
 def test_api_03_update_cd_with_empty_req_fields(
         read_config, read_user_creds, read_contact_temp):
     # Authorization
@@ -107,8 +113,8 @@ def test_api_03_update_cd_with_empty_req_fields(
 
 
 #  Test negative: update contact details with invalid Postal Code format
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
-@pytest.mark.acceptance
 @pytest.mark.regression
 def test_api_04_update_cd_with_invalid_postal_code(
         read_config, read_user_creds, read_contact_temp):
@@ -137,8 +143,8 @@ def test_api_04_update_cd_with_invalid_postal_code(
 
 
 #  Test negative: update contact details with invalid Date of Birth format
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
-@pytest.mark.acceptance
 @pytest.mark.regression
 def test_api_05_update_cd_with_invalid_birth_date(
         read_config, read_user_creds, read_contact_temp):
@@ -167,8 +173,8 @@ def test_api_05_update_cd_with_invalid_birth_date(
 
 
 #  Test negative: update contact details with invalid Phone format
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
-@pytest.mark.acceptance
 @pytest.mark.regression
 def test_api_06_update_cd_with_invalid_phone(
         read_config, read_user_creds, read_contact_temp):
@@ -197,8 +203,8 @@ def test_api_06_update_cd_with_invalid_phone(
 
 
 #  Test negative: update contact details with invalid Email format
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
-@pytest.mark.acceptance
 @pytest.mark.regression
 def test_api_07_update_cd_with_invalid_email(
         read_config, read_user_creds, read_contact_temp):
@@ -227,6 +233,7 @@ def test_api_07_update_cd_with_invalid_email(
 
 
 #  Test negative: update contact details with required fields >20 symbols max length
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
 @pytest.mark.acceptance
 @pytest.mark.regression
@@ -265,8 +272,9 @@ def test_api_08_update_cd_with_over_len_req_fields(
 
 
 #  Test negative: update contact details with Postal Code >10 symbols max length
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
-@pytest.mark.acceptance
+@pytest.mark.regression
 def test_api_09_update_cd_with_over_len_post_code(
         read_config, read_user_creds, read_contact_temp):
     # Authorization
@@ -294,8 +302,9 @@ def test_api_09_update_cd_with_over_len_post_code(
 
 
 #  Test negative: update contact details with Phone >15 symbols max length
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
-@pytest.mark.acceptance
+@pytest.mark.regression
 def test_api_10_update_cd_with_over_len_phone(
         read_config, read_user_creds, read_contact_temp):
     # Authorization
@@ -323,8 +332,9 @@ def test_api_10_update_cd_with_over_len_phone(
 
 
 #  Test negative: update contact details with optional fields >40 symbols max length
+@allure.feature("Edit functionality")
 @pytest.mark.edit_contact
-@pytest.mark.acceptance
+@pytest.mark.regression
 def test_api_11_update_cd_with_over_len_opt_fields(
         read_config, read_user_creds, read_contact_temp):
     # Authorization

@@ -1,9 +1,12 @@
 import pytest
+import allure
 from helper.utils import send_request
 from helper.utils import generate_random_email
 
 
+@allure.feature("Signup functionality")
 @pytest.mark.sign_up
+@pytest.mark.smoke
 def test_successful_signup(read_config, read_signup_temp):
     url = f'{read_config["URL"]}/users'
     email = generate_random_email()
@@ -18,6 +21,7 @@ def test_successful_signup(read_config, read_signup_temp):
     assert "token" in response.json()
 
 
+@allure.feature("Signup functionality")
 @pytest.mark.sign_up
 def test_negative_signup_with_existing_email(read_config, read_user_creds, read_signup_temp):
     url = f'{read_config["URL"]}/users'

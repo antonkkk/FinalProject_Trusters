@@ -1,4 +1,5 @@
 import pytest
+import allure
 from selenium.webdriver.common.by import By
 from pages.contact_details_page import ContactDetailsPage
 from pages.contact_list_page import ContactListPage
@@ -9,10 +10,11 @@ from test_data.contact_template import ContactTemplate
 from test_data.env import Env
 
 
-@pytest.mark.contact_details
+# Test positive: Open Edit Contact page
+@allure.feature("Edit functionality")
+@pytest.mark.edit_contact
 @pytest.mark.smoke
 @pytest.mark.acceptance
-# Test positive: Open Edit Contact page
 def test_ui_01_open_edit_contact_details(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -36,10 +38,12 @@ def test_ui_01_open_edit_contact_details(browser):
     assert header.text == "Edit Contact"
 
 
-@pytest.mark.contact_details
+# Test positive: Submit changes on Edit Contact page
+@allure.feature("Edit functionality")
+@pytest.mark.edit_contact
 @pytest.mark.smoke
 @pytest.mark.acceptance
-# Test positive: Submit changes on Edit Contact page
+@pytest.mark.regression
 def test_ui_02_submit_edit_contact_changes(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -82,10 +86,12 @@ def test_ui_02_submit_edit_contact_changes(browser):
     assert cd_page.check_values(ContactTemplate.contact_edit)
 
 
-@pytest.mark.contact_details
+# Test positive: Cancel changes on Edit Contact page
+@allure.feature("Edit functionality")
+@pytest.mark.edit_contact
+@pytest.mark.smoke
 @pytest.mark.regression
 @pytest.mark.acceptance
-# Test positive: Cancel changes on Edit Contact page
 def test_ui_03_cancel_edit_contact_changes(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -125,10 +131,12 @@ def test_ui_03_cancel_edit_contact_changes(browser):
     assert not cd_page.check_required_fields(ContactTemplate.contact_cancel)
 
 
-@pytest.mark.contact_details
+# Test negative: Submit Edit Contact form with empty required fields
+@allure.feature("Edit functionality")
+@pytest.mark.edit_contact
 @pytest.mark.smoke
 @pytest.mark.acceptance
-# Test negative: Submit Edit Contact form with empty required fields
+@pytest.mark.regression
 def test_ui_04_submit_edit_contact_with_empty_req_fields(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -163,10 +171,11 @@ def test_ui_04_submit_edit_contact_with_empty_req_fields(browser):
     assert "lastName: Path `lastName` is required." in error_text, "Lastname validation failed"
 
 
-@pytest.mark.contact_details
+# Test negative: Submit Edit Contact form with invalid format Phone, Birth Date, Email, Postal Code
+@allure.feature("Edit functionality")
+@pytest.mark.edit_contact
 @pytest.mark.regression
 @pytest.mark.acceptance
-# Test negative: Submit Edit Contact form with invalid format Phone, Birth Date, Email, Postal Code
 def test_ui_05_submit_edit_contact_with_invalid_format_values(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -212,9 +221,11 @@ def test_ui_05_submit_edit_contact_with_invalid_format_values(browser):
     assert "birthdate: Birthdate is invalid" in error_text, "Date of Birth validation failed"
 
 
-@pytest.mark.contact_details
-@pytest.mark.acceptance
 # Test negative: Submit required fields with over max length values
+@allure.feature("Edit functionality")
+@pytest.mark.edit_contact
+@pytest.mark.acceptance
+@pytest.mark.regression
 def test_ui_06_submit_edit_required_fields_with_over_len_values(browser):
     # Authorization
     login_page = LoginPage(browser)
@@ -257,9 +268,10 @@ def test_ui_06_submit_edit_required_fields_with_over_len_values(browser):
     assert "is longer than the maximum allowed length (20)" in error_text
 
 
-@pytest.mark.contact_details
-@pytest.mark.acceptance
 # Test negative: Submit optional fields with over max length values
+@allure.feature("Edit functionality")
+@pytest.mark.edit_contact
+@pytest.mark.regression
 def test_ui_07_submit_edit_optional_fields_with_over_len_values(browser):
     # Authorization
     login_page = LoginPage(browser)
