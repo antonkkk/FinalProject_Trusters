@@ -1,3 +1,4 @@
+import os
 import json
 import pytest
 from selenium import webdriver
@@ -11,8 +12,10 @@ def browser():
     options.add_argument("--incognito")
     options.add_argument("--disable-notifications")
     options.add_argument("--disable-save-password-bubble")
+    if os.getenv('HEADLESS', 'false') == 'true':
+        options.add_argument("--headless")
 
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options)
     yield driver
     driver.quit()
 
