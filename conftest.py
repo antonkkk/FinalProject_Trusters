@@ -1,5 +1,6 @@
 import os
 import json
+import platform
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -15,19 +16,26 @@ def browser():
     options.add_argument("--incognito")
     options.add_argument("--disable-notifications")
     options.add_argument("--disable-save-password-bubble")
+
     if is_jenkins:
         # Используем путь к Chrome внутри контейнера Jenkins
         options.binary_location = "/opt/google/chrome/chrome"
         chromedriver_path = "/usr/local/bin/chromedriver"
     else:
-        # Для локального запуска оставить дефолтные настройки
-        chromedriver_path = "chromedriver"
-
-    service = Service(chromedriver_path)
+        system = platform.system()
+        if system == "Darwin":
+            chromedriver_path = "/opt/homebrew/bin/chromedriver"
+        elif system == "Windows":
+            chromedriver_path = "chromedriver.exe"
+        else:
+            chromedriver_path = "chromedriver"
 
     if os.getenv('HEADLESS', 'false') == 'true':
         options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1920,1080")
 
+    service = Service(chromedriver_path)
     driver = webdriver.Chrome(service=service, options=options)
     yield driver
     driver.quit()
