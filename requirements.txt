@@ -28,3 +28,4 @@ urllib3==2.2.3
 wsproto==1.2.0
 requests
 pytest-repeat
+allure-pytest
