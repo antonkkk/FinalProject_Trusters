@@ -3,19 +3,32 @@ import json
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from helper.utils import send_request
 
 
 @pytest.fixture(scope="function")
 def browser():
+    is_jenkins = os.getenv('CP') == 'true'  # или любой другой признак
+
     options = Options()
     options.add_argument("--incognito")
     options.add_argument("--disable-notifications")
     options.add_argument("--disable-save-password-bubble")
+    if is_jenkins:
+        # Используем путь к Chrome внутри контейнера Jenkins
+        options.binary_location = "/opt/google/chrome/chrome"
+        chromedriver_path = "/usr/local/bin/chromedriver"
+    else:
+        # Для локального запуска оставить дефолтные настройки
+        chromedriver_path = "chromedriver"
+
+    service = Service(chromedriver_path)
+
     if os.getenv('HEADLESS', 'false') == 'true':
         options.add_argument("--headless")
 
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(service=service, options=options)
     yield driver
     driver.quit()
 
