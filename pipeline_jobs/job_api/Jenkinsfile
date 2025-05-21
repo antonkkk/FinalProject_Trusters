@@ -1,15 +1,6 @@
 pipeline {
          agent any
          stages {
-             stage('Clone repository') {
-             steps {
-                    sh '''
-                    rm -rf FinalProject_Trusters
-                    git clone https://github.com/antonkkk/FinalProject_Trusters.git
-                    cd FinalProject_Trusters
-                    '''
-                      }
-                      }
                  stage('Virtual Environment') {
                  steps {
                      sh '''
