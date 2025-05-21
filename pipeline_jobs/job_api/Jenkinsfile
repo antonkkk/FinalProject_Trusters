@@ -1,0 +1,48 @@
+pipeline {
+         agent any
+         stages {
+             stage('Clone repository') {
+             steps {
+                    sh '''
+                    rm -rf FinalProject_Trusters
+                    git clone https://github.com/antonkkk/FinalProject_Trusters.git
+                    cd FinalProject_Trusters
+                    '''
+                      }
+                      }
+                 stage('Virtual Environment') {
+                 steps {
+                     sh '''
+                      cd FinalProject_Trusters &&
+                     python3 -m venv venv &&
+                    . venv/bin/activate &&
+                     pip install -r requirements.txt
+                       '''
+                   }
+                   }
+                   stage('Test execution') {
+                 steps {
+                     sh '''
+                      cd FinalProject_Trusters
+                      pytest tests/api --alluredir=allure-results
+                       '''
+                   }
+                   }
+                stage('Generate report') {
+                 steps {
+                     sh '''
+                     cd FinalProject_Trusters
+                     allure generate allure-results -o allure-report --clean
+                       '''
+                    allure([
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'FinalProject_Trusters/allure-results']],
+                        report: 'FinalProject_Trusters/allure-report'
+                ])
+                      
+                   }
+                   }
+                 
+               }
+}
+
