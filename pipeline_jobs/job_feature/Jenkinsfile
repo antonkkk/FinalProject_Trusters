@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'JOB_TYPE', choices: ['add_contact', 'edit_contact', 'contact_details', 'login', 'logout', 'sign_up', 'delete_contact'], description: 'Feature type')
+    }
+    stages {
+        stage('Virtual Environment') {
+            steps {
+                sh '''
+                python3 -m venv venv && \
+                . venv/bin/activate && \
+                pip install -r requirements.txt
+                '''
+            }
+        }
+        stage('Test execution') {
+            steps {
+                script {
+                    def test_marker = ''
+                    if (params.JOB_TYPE == 'add_contact') {
+                        test_marker = '-m add_contact'
+                    } else if (params.JOB_TYPE == 'edit_contact') {
+                        test_marker = '-m edit_contact'
+                    } else if (params.JOB_TYPE == 'delete_contact') {
+                        test_marker = '-m delete_contact'
+                    } else if (params.JOB_TYPE == 'login') {
+                        test_marker = '-m login'
+                    } else if (params.JOB_TYPE == 'logout') {
+                        test_marker = '-m logout'
+                    } else if (params.JOB_TYPE == 'sign_up') {
+                        test_marker = '-m sign_up'
+                    } else if (params.JOB_TYPE == 'contact_details') {
+                        test_marker = '-m contact_details'
+                    }
+                    
+                    def cmd = "pytest ${test_marker} --alluredir=allure-results"
+                    sh "${cmd}"
+                }
+            }
+        }
+        stage('Generate report') {
+            steps {
+                sh '''
+                allure generate allure-results -o allure-report --clean
+                '''
+                allure([
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'FinalProject_Trusters/allure-results']],
+                    report: 'FinalProject_Trusters/allure-report'
+                ])
+            }
+        }
+    }
+}
