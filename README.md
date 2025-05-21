@@ -11,7 +11,9 @@ Application link: [https://thinking-tester-contact-list.herokuapp.com/](https://
 - Python 3.x
 - pytest
 - Selenium WebDriver
-- Allure Reports **???**
+- Allure Reports
+- Jenkins
+- Docker
   
 ---
 ## Project structure
@@ -92,7 +94,7 @@ The conftest.py file describes fixtures for configuring the browser, login, and 
 
 ---
 ## Available markers
-1. UI tests:
+1. UI, API tests:
    * login - All login tests
    * sign_up - All sign up tests
    * logout - All logout tests
@@ -100,16 +102,20 @@ The conftest.py file describes fixtures for configuring the browser, login, and 
    * edit_contact -Tests editing existing contact
    * delete_contact -Tests deletion existing contact
    * contact_details -Tests view contact details
-   **???**
 
 2. Common:
    * regression - Run the regression test suite
    * smoke - Run the smoke test suite
    * acceptance - Run the acceptance test suite
-
----
-## Additional arguments
-**???**
+  
+3. Allure markers:
+   * "Login functionality" - Tests related to login functionality
+   * "Signup functionality" - Tests related to Signup functionality
+   * "Logout functionality" - Tests related to Logout functionality
+   * "Add contact functionality" - Tests related to Add contact functionality
+   * "Edit functionality" - Tests related to Edit contact functionality
+   * "Delete functionality" - Tests related to Delete contact functionality
+   * "View contact functionality" - Tests related to View contact details functionality
 
 ---
 ## Contacts and support
@@ -117,5 +123,4 @@ If you have any questions or suggestions, create an issue or write to email:
 trusters_test@gmail.com
 
 ---
-## License
-**???**
+
