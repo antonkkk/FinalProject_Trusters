@@ -4,7 +4,6 @@ pipeline {
                  stage('Virtual Environment') {
                  steps {
                      sh '''
-                      cd FinalProject_Trusters &&
                      python3 -m venv venv &&
                     . venv/bin/activate &&
                      pip install -r requirements.txt
@@ -14,7 +13,6 @@ pipeline {
                    stage('Test execution') {
                  steps {
                      sh '''
-                      cd FinalProject_Trusters
                       pytest tests/api --alluredir=allure-results
                        '''
                    }
@@ -22,7 +20,6 @@ pipeline {
                 stage('Generate report') {
                  steps {
                      sh '''
-                     cd FinalProject_Trusters
                      allure generate allure-results -o allure-report --clean
                        '''
                     allure([
