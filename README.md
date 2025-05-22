@@ -17,7 +17,72 @@ Application link: [https://thinking-tester-contact-list.herokuapp.com/](https://
   
 ---
 ## Project structure
-**???**
+
+```text
+.
+├── .gitignore
+├── Dockerfile
+├── README.md
+├── conftest.py
+├── helper
+│   ├── __init__.py
+│   └── utils.py
+├── main.py
+├── pages
+│   ├── __init__.py
+│   ├── add_contact_page.py
+│   ├── base_page.py
+│   ├── contact_details_page.py
+│   ├── contact_list_page.py
+│   ├── edit_contact_details_page.py
+│   ├── login_page.py
+│   └── signup_page.py
+├── pipeline_jobs
+│   ├── job_acceptance
+│   │   └── Jenkinsfile
+│   ├── job_all
+│   │   └── Jenkinsfile
+│   ├── job_api
+│   │   └── Jenkinsfile
+│   ├── job_feature
+│   │   └── Jenkinsfile
+│   ├── job_regression
+│   │   └── Jenkinsfile
+│   ├── job_smoke
+│   │   └── Jenkinsfile
+│   └── job_ui
+│       └── Jenkinsfile
+├── pytest.ini
+├── requirements.txt
+├── test_data
+│   ├── __init__.py
+│   ├── add_contact_template.json
+│   ├── config.json
+│   ├── contact_fields_locators.py
+│   ├── contact_template.py
+│   ├── env.py
+│   ├── signup.json
+│   ├── user_creds.json
+│   └── user_creds.py
+└── tests
+    ├── __init__.py
+    ├── api
+    │   ├── __init__.py
+    │   ├── test_api_add_contact.py
+    │   ├── test_api_delete_contact.py
+    │   ├── test_api_edit_contact_details.py
+    │   ├── test_api_login.py
+    │   ├── test_api_logout.py
+    │   ├── test_api_signup.py
+    │   └── test_api_view_contact_details.py
+    └── ui
+        ├── __init__.py
+        ├── test_ui_add_contact.py
+        ├── test_ui_edit_contact_details.py
+        ├── test_ui_login.py
+        ├── test_ui_signup.py
+        └── test_ui_view_contact_details.py
+```
 
 ---
 ## Installation and configuration
