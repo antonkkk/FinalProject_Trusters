@@ -7,42 +7,47 @@ pipeline {
         stage('Virtual Environment') {
             steps {
                 sh '''
-                python3 -m venv venv && \
-                . venv/bin/activate && \
+                python3 -m venv venv
+                . venv/bin/activate
                 pip install -r requirements.txt
                 '''
             }
         }
         stage('Test execution') {
-    steps {
-        script {
-            // Создаем соответствие JOB_TYPE и тестового маркера
-            def jobTypeToMarker = [
-                'add_contact'   : '-m add_contact',
-                'edit_contact'  : '-m edit_contact',
-                'delete_contact': '-m delete_contact',
-                'login'         : '-m login',
-                'logout'        : '-m logout',
-                'sign_up'      : '-m sign_up',
-                'contact_details': '-m contact_details'
-            ]
+            steps {
+                script {
+                    // Создаем соответствие JOB_TYPE и тестового маркера
+                    def jobTypeToMarker = [
+                        'add_contact'   : '-m add_contact',
+                        'edit_contact'  : '-m edit_contact',
+                        'delete_contact': '-m delete_contact',
+                        'login'         : '-m login',
+                        'logout'        : '-m logout',
+                        'sign_up'       : '-m sign_up',
+                        'contact_details': '-m contact_details'
+                    ]
 
-            // Получаем маркер по типу JOB_TYPE или присваиваем пустую строку, если совпадение не найдено
-            def test_marker = jobTypeToMarker.get(params.JOB_TYPE, '')
+                    // Получаем маркер по типу JOB_TYPE или присваиваем пустую строку
+                    def test_marker = jobTypeToMarker.get(params.JOB_TYPE, '')
 
-            sh "pytest ${test_marker} --alluredir=allure-results"
+                    // Запуск pytest с выбранным маркером
+                    sh """
+                    . venv/bin/activate
+                    pytest ${test_marker} --alluredir=allure-results
+                    """
+                }
+            }
         }
-    }
-}
         stage('Generate report') {
             steps {
                 sh '''
+                . venv/bin/activate
                 allure generate allure-results -o allure-report --clean
                 '''
                 allure([
                     reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'FinalProject_Trusters/allure-results']],
-                    report: 'FinalProject_Trusters/allure-report'
+                    results: [[path: 'allure-results']],
+                    report: 'allure-report'
                 ])
             }
         }
