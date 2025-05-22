@@ -14,30 +14,26 @@ pipeline {
             }
         }
         stage('Test execution') {
-            steps {
-                script {
-                    def test_marker = ''
-                    if (params.JOB_TYPE == 'add_contact') {
-                        test_marker = '-m add_contact'
-                    } else if (params.JOB_TYPE == 'edit_contact') {
-                        test_marker = '-m edit_contact'
-                    } else if (params.JOB_TYPE == 'delete_contact') {
-                        test_marker = '-m delete_contact'
-                    } else if (params.JOB_TYPE == 'login') {
-                        test_marker = '-m login'
-                    } else if (params.JOB_TYPE == 'logout') {
-                        test_marker = '-m logout'
-                    } else if (params.JOB_TYPE == 'sign_up') {
-                        test_marker = '-m sign_up'
-                    } else if (params.JOB_TYPE == 'contact_details') {
-                        test_marker = '-m contact_details'
-                    }
-                    
-                    def cmd = "pytest ${test_marker} --alluredir=allure-results"
-                    sh "${cmd}"
-                }
-            }
+    steps {
+        script {
+            // Создаем соответствие JOB_TYPE и тестового маркера
+            def jobTypeToMarker = [
+                'add_contact'   : '-m add_contact',
+                'edit_contact'  : '-m edit_contact',
+                'delete_contact': '-m delete_contact',
+                'login'         : '-m login',
+                'logout'        : '-m logout',
+                'sign_up'      : '-m sign_up',
+                'contact_details': '-m contact_details'
+            ]
+
+            // Получаем маркер по типу JOB_TYPE или присваиваем пустую строку, если совпадение не найдено
+            def test_marker = jobTypeToMarker.get(params.JOB_TYPE, '')
+
+            sh "pytest ${test_marker} --alluredir=allure-results"
         }
+    }
+}
         stage('Generate report') {
             steps {
                 sh '''
