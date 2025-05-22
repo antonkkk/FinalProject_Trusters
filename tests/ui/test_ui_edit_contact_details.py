@@ -223,6 +223,7 @@ def test_ui_05_submit_edit_contact_with_invalid_format_values(browser):
 # Test negative: Submit required fields with over max length values
 @allure.feature("Edit functionality")
 @pytest.mark.edit_contact
+@pytest.mark.acceptance
 @pytest.mark.regression
 def test_ui_06_submit_edit_required_fields_with_over_len_values(browser):
     # Authorization
